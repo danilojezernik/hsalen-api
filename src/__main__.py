@@ -1,4 +1,7 @@
 from flask import Flask
+from flask_cors import CORS
+from flask_jwt_extended import create_access_token, jwt_required, JWTManager
+
 import src.database.db as db
 
 from src import env
@@ -12,6 +15,10 @@ from src.routes.regresija import regresija_bp
 from src.routes.samohipnoza import samohipnoza_bp
 
 app = Flask(__name__)
+CORS(app)
+
+app.secret_key = env.SECRET_KEY
+jwt = JWTManager(app)
 
 app.register_blueprint(index_bp)
 app.register_blueprint(blog_bp)

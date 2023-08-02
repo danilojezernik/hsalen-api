@@ -5,3 +5,4 @@ from dataclasses import dataclass
 class Index:
     naslov: str
     podnaslov: str
+    pomoc: str
