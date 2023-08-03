@@ -2,9 +2,8 @@ from flask import Flask
 from flask_cors import CORS
 from flask_jwt_extended import create_access_token, jwt_required, JWTManager
 
-import src.database.db as db
-
 from src import env
+from src.database import db
 from src.routes.blog import blog_bp
 from src.routes.hipnoterapija import hipnoterapija_bp
 from src.routes.index import index_bp
