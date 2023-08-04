@@ -12,7 +12,7 @@ index = [
                   'učnih sposobnosti, dvig koncentracije, izboljšanje spomina</li><li>Odprava strahov in '
                   'fobij</li><li>Regresija v pretekla življenja</li><li>Tečaj samohipnoze</li><li>Hipnotična '
                   'koma</li><li>Prehod v višja stanja zavesti</li><li>Skupinska hipnoza</li><li>In tako '
-                  'dalje</li><p>Jasnovidnost:</p><ul><li>Razumevanje preteklosti in vpliv preteklosti na sedanje '
+                  'dalje</li></ul><p>Jasnovidnost:</p><ul><li>Razumevanje preteklosti in vpliv preteklosti na sedanje '
                   'življenje</li><li>Vpogled v prihodnost in lažje sprejemanje nadaljnjih življenjskih odločitev ('
                   'prava ali ne parava pot)</li><li>Lekcije življenj in razumevanje le teh</li><li>Karmični '
                   'dolgovi</li><li>Razumevanje prisotnost določenih oseb v sedanjem življenju</li><li>Povezovanje z '
