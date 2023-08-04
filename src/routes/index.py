@@ -12,3 +12,9 @@ index_bp = Blueprint("index", __name__)
 def get_index():
     index = dumps(db.proces.index.find())
     return json.loads(index)
+
+
+@index_bp.route("/api/index/knjiga", methods=['GET'])
+def get_knjiga():
+    knjiga = dumps(db.proces.knjiga.find())
+    return json.loads(knjiga)
