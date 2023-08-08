@@ -16,13 +16,6 @@ def get_blog():
     return json.loads(blog)
 
 
-# PRIDOBI OBJAVO PO ID
-@blog_bp.route("/api/blog/<_id>", methods=['GET', 'POST'])
-def get_blog_id(_id):
-    blog_id = dumps(db.proces.blog.find_one({'_id': ObjectId(_id)}))
-    return json.loads(blog_id)
-
-
 # DODAJ NOVO OBJAVO
 @blog_bp.route("/api/blog", methods=['POST'])
 def post_blog():
@@ -32,6 +25,13 @@ def post_blog():
         return jsonify({'message': 'Objava uspešno dodana'})
 
 
+# PRIDOBI OBJAVO PO ID
+@blog_bp.route("/api/blog/<_id>", methods=['GET', 'POST'])
+def get_blog_id(_id):
+    blog_id = dumps(db.proces.blog.find_one({'_id': ObjectId(_id)}))
+    return json.loads(blog_id)
+
+
 # UREDI OBJAVO
 @blog_bp.route("/api/blog/<int:id>", methods=['POST'])
 def edit_blog(id):
@@ -39,6 +39,7 @@ def edit_blog(id):
 
 
 # IZBRIŠI OBJAVO
-@blog_bp.route("/api/blog/<int:id>", methods=['DELETE'])
-def delete_blog(id):
-    return jsonify({'stran': f'BLOG z metodo DELETE: Izbriši objavo {id}'})
+@blog_bp.route("/api/blog/<_id>", methods=['DELETE'])
+def delete_blog(_id):
+    db.proces.blog.delete_one({'_id': ObjectId(_id)})
+    return jsonify({'message': 'Blog izbrisan'})

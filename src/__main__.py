@@ -5,6 +5,7 @@ from flask_jwt_extended import create_access_token, jwt_required, JWTManager
 from src import env
 from src.database import db
 from src.routes.blog import blog_bp
+from src.routes.global_error import global_error_bp
 from src.routes.hipnoterapija import hipnoterapija_bp
 from src.routes.index import index_bp
 from src.routes.jasnovidnost import jasnovidnost_bp
@@ -27,8 +28,9 @@ app.register_blueprint(regresija_bp)
 app.register_blueprint(jasnovidnost_bp)
 app.register_blueprint(samohipnoza_bp)
 app.register_blueprint(medijstvo_bp)
+app.register_blueprint(global_error_bp)
 
 if __name__ == '__main__':
-    db.drop()
-    db.seed()
+    # db.drop()
+    # db.seed()
     app.run(host='0.0.0.0', port=env.PORT, debug=True)

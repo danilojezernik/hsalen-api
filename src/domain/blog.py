@@ -1,3 +1,4 @@
+import datetime
 from dataclasses import dataclass
 
 
@@ -5,4 +6,5 @@ from dataclasses import dataclass
 class Blog:
     naslov: str
     podnaslov: str
+    datum_vnosa: datetime
     vsebina: str

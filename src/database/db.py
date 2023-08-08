@@ -2,6 +2,7 @@ from pymongo import MongoClient
 
 from src import env
 from src.database.podatki.blog import blog
+from src.database.podatki.global_error import global_error
 from src.database.podatki.jaz import jaz
 from src.database.podatki.hipnoterapija import hipnoterapija
 from src.database.podatki.index import index
@@ -18,6 +19,7 @@ proces = client[env.DB_PROCES]
 
 def drop():
     proces.blog.drop()
+    # proces.error.drop()
     # proces.mediji.drop()
     # proces.jaz.drop()
     # proces.hipnoterapija.drop()
@@ -31,6 +33,7 @@ def drop():
 
 def seed():
     proces.blog.insert_many(blog)
+    # proces.error.insert_many(global_error)
     # proces.mediji.insert_many(mediji)
     # proces.jaz.insert_many(jaz)
     # proces.hipnoterapija.insert_many(hipnoterapija)

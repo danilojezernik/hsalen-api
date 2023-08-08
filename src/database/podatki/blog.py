@@ -1,3 +1,4 @@
+import datetime
 from dataclasses import asdict
 
 from src.domain.blog import Blog
@@ -7,6 +8,7 @@ blog = [
         Blog(
             naslov='Usoda duše',
             podnaslov='',
+            datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Ali lahko spremenim svojo usodo? Odgovor je DA. Kako? Ali ni vse že v naprej določeno? Seveda '
                     'je, vse je že določeno. Ne razumem, kako potem lahko spreminjam svojo usodo? Odgovor je zelo '
                     'enostaven. Spreminjaš jo s svojimi dejanji vsak dan.</p><p>Vsakemu od nas je začrtana prava pot '
@@ -38,6 +40,7 @@ blog = [
         Blog(
             naslov='Regresija v prejšnja življenja',
             podnaslov='',
+            datum_vnosa=datetime.datetime.now(),
             vsebina='<p>V življenju se srečamo z mnogo izkušnjami in lekcijami za katere ne najdemo vzroka-pravega '
                     'vzroka.</p><p>Danes najdemo goro ponudb o izvajanju regresij in odpravljanju težav. Ljudje se '
                     'masovno tega poslužujejo in želijo odpravit določene slabe vzorce, bolezenska stanja, '
@@ -69,6 +72,7 @@ blog = [
         Blog(
             naslov='Intuicija',
             podnaslov='',
+            datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Preprosto zaupaj svojim notranjim občutkom, ne dvomi v te občutke, ne dvomi vase, ne dovoli, '
                     'da dvom prevlada intuicijo. Naš višji jaz nas vodi skozi življenje, pomembne življenjske '
                     'odločitve in nas usmerja na pravo dogovorjeno pot usode. Samo ena pot je prava in ta ponavadi ni '
@@ -85,6 +89,7 @@ blog = [
         Blog(
             naslov='Drevo življenja',
             podnaslov='Kar daješ, to dobiš',
+            datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Misel je energija, večkrat razmišljamo o isti zadevi, začnemo o misli govorit v besedah, '
                     'iz besed v nadaljujemo v stavkih, stavki preidejo v dejanja, dejanja v navade, '
                     'navade v prioritete, prioritete postanejo vodilo-kompas življenja, prioritete smo mi. Sami sebi '
@@ -97,6 +102,7 @@ blog = [
         Blog(
             naslov='Hujšanje s pomočjo hipnoze',
             podnaslov='',
+            datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Se želite znebiti odvečnih kilogramov? Ste poizkusili mnogo različnih diet?</p><p>Vedno kadar '
                     'shujšam oz. imam dieto se ponovno zredim in še več kg pridobim nazaj. Ta stavek se pogosto '
                     'pojavlja po ponovnem razočaranju, ponovni pridobitvi izgubljenih kilogramov.</p><p>Pogosto je '
@@ -111,6 +117,7 @@ blog = [
         Blog(
             naslov='Odvajanje od kajenja s pomočjo hipnoze',
             podnaslov='',
+            datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Mnogo ljudi me vpraša ali lahko preneham kadit s pomočjo hipnoze. Seveda lahko, s pomočjo '
                     'hipnoze vendar ne brez osebne odločitve. Če vam reče zdravnik, da prenehate kaditi, če obstaja '
                     'samo želja, vas pošlje partner ali partnerka na terapijo, vam gre kajenje počasi že na živce '
@@ -136,6 +143,7 @@ blog = [
         Blog(
             naslov='Ljubezen',
             podnaslov='Največja in najmočnejša sila v vesolju',
+            datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Obstaja veliko različnih sil – energij v vesolju, na Zemlji materialnih stvari, '
                     'itd.</p><p>Ljubezen premaga vse ovire, vso negativno energijo, magijo, neverjetne življenske '
                     'situacije.</p><p>Lahko imaš vse, če pa nimaš občutka zadovoljstva v sebi, napolnjeno srce, '
@@ -154,6 +162,7 @@ blog = [
         Blog(
             naslov='Certifikat za hipnoterapevta',
             podnaslov='',
+            datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Leta 2016 sem uspešno opravil intenzivni mednarodni tečaj za hipnoterapevta na Omni Hypnosis '
                     'Training Center Slovenija in od tega dne dalje tudi opravljam to poslanstvo. Že pred tem sem '
                     'veliko pomagal ljudem in s tem izobraževanjem sem si še samo zelo poglobil znanje in tudi '
@@ -168,6 +177,7 @@ blog = [
         Blog(
             naslov='Hipnoza in hipnoterapija',
             podnaslov='Mogočno orodje za izboljšanje kvalitete življenja',
+            datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Ali je hipnoza nekaj hudega, nekaj resnega, mističnega, nevarnega? Šla bi na hipnozo vendar '
                     'si ne upam. Kaj pa če zaspim in se več ne zbudim? Kaj pa če me začaraš, da bom delala stvari '
                     'katere v normalnem stanju ne bi nikoli?  Ne upam si iti na hipnozo, ker lahko povem stvari '
