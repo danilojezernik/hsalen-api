@@ -31,6 +31,6 @@ app.register_blueprint(medijstvo_bp)
 app.register_blueprint(global_error_bp)
 
 if __name__ == '__main__':
-    # db.drop()
-    # db.seed()
+    db.drop()
+    db.seed()
     app.run(host='0.0.0.0', port=env.PORT, debug=True)

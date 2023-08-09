@@ -23,3 +23,9 @@ def post_blog():
     if data is not None:
         db.proces.error.insert_one(data)
         return jsonify({'message': 'Objava uspešno dodana'})
+
+
+@global_error_bp.route('/api/error/delete', methods=['DELETE'])
+def delete_all_errors():
+    db.proces.error.delete_many({})
+    return jsonify({"message": "Blog izbrisanm uspešno"})
