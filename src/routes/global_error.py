@@ -1,4 +1,6 @@
 import json
+
+from bson import ObjectId
 from bson.json_util import dumps
 
 from flask import Blueprint, jsonify, request
@@ -15,6 +17,12 @@ def get_error():
     return json.loads(blog)
 
 
+@global_error_bp.route('/api/error/<_id>', methods=['GET', 'POST'])
+def get_error_id(_id):
+    error = dumps(db.proces.error.find_one({'_id': ObjectId(_id)}))
+    return json.loads(error)
+
+
 # DODAJ NOV ERROR
 @global_error_bp.route("/api/error", methods=['POST'])
 def post_blog():
@@ -28,4 +36,10 @@ def post_blog():
 @global_error_bp.route('/api/error/delete', methods=['DELETE'])
 def delete_all_errors():
     db.proces.error.delete_many({})
-    return jsonify({"message": "Blog izbrisanm uspešno"})
+    return jsonify({"message": "Vsi error-ji izbrisani uspešno"})
+
+
+@global_error_bp.route('/api/error/delete/<_id>', methods=['DELETE'])
+def delete_error_by_id(_id):
+    db.proces.error.delete_one({'_id': ObjectId(_id)})
+    return jsonify({"message": f"Blog _${_id}_ izbrisan uspešno!"})

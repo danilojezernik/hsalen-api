@@ -6,10 +6,9 @@ global_error = [
     asdict(
         GlobalError(
             databs='#modalexample',
-            id='modalExample',
+            idModal='modalExample',
             path='Naslov Mediji',
             message='Opis Mediji',
-            handler='Video Mediji',
             time='Povezava Mediji',
             stack='error'
         )
