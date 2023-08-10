@@ -39,7 +39,13 @@ def edit_blog(id):
 
 
 # IZBRIŠI OBJAVO
-@blog_bp.route("/api/blog/<_id>", methods=['DELETE'])
+@blog_bp.route("/api/blog/delete/<_id>", methods=['DELETE'])
 def delete_blog(_id):
-    db.proces.blog.delete_one({'_id': ObjectId(_id)})
-    return jsonify({'message': 'Blog izbrisan'})
+    try:
+        result = db.proces.blog.delete_one({'_id': ObjectId(_id)})
+        if result.deleted_count > 0:
+            return jsonify({'message': 'Blog deleted'}), 200
+        else:
+            return jsonify({'error':'Blog not found'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500

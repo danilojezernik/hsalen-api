@@ -25,21 +25,29 @@ def get_error_id(_id):
 
 # DODAJ NOV ERROR
 @global_error_bp.route("/api/error", methods=['POST'])
-def post_blog():
+def post_error():
     data = request.get_json()
-    print(data)
     if data is not None:
         db.proces.error.insert_one(data)
-        return jsonify({'message': 'Objava uspešno dodana'})
+        return jsonify({'message': 'Error added successfully!'})
 
 
-@global_error_bp.route('/api/error/delete', methods=['DELETE'])
+@global_error_bp.route('/api/error/delete_all', methods=['DELETE'])
 def delete_all_errors():
-    db.proces.error.delete_many({})
-    return jsonify({"message": "Vsi error-ji izbrisani uspešno"})
+    try:
+        db.proces.error.delete_many({})
+        return jsonify({'message': 'All errors deleted successfully!'})
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 @global_error_bp.route('/api/error/delete/<_id>', methods=['DELETE'])
 def delete_error_by_id(_id):
-    db.proces.error.delete_one({'_id': ObjectId(_id)})
-    return jsonify({"message": f"Blog _${_id}_ izbrisan uspešno!"})
+    try:
+        result = db.proces.error.delete_one({'_id': ObjectId(_id)})
+        if result.deleted_count > 0:
+            return jsonify({'message': 'Error deleted'}), 200
+        else:
+            return jsonify({'error': 'Error not found'}), 404
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
