@@ -3,3 +3,4 @@ python-dotenv
 pymongo
 flask_cors
 flask_jwt_extended
+flask_apscheduler
