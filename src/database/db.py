@@ -18,12 +18,12 @@ proces = client[env.DB_PROCES]
 
 
 def drop():
-    # proces.blog.drop()
-    proces.error.drop()
+    proces.blog.drop()
+    # proces.error.drop()
     # proces.mediji.drop()
     # proces.jaz.drop()
     # proces.hipnoterapija.drop()
-    # proces.index.drop()
+# proces.index.drop()
     # proces.jasnovidnost.drop()
     # proces.knjiga.drop()
     # proces.medijstvo.drop()
@@ -32,12 +32,12 @@ def drop():
 
 
 def seed():
-    # proces.blog.insert_many(blog)
-    proces.error.insert_many(global_error)
+    proces.blog.insert_many(blog)
+    # proces.error.insert_many(global_error)
     # proces.mediji.insert_many(mediji)
     # proces.jaz.insert_many(jaz)
     # proces.hipnoterapija.insert_many(hipnoterapija)
-    # proces.index.insert_many(index)
+# proces.index.insert_many(index)
     # proces.jasnovidnost.insert_many(jasnovidnost)
     # proces.knjiga.insert_many(knjiga)
     # proces.medijstvo.insert_many(medijstvo)

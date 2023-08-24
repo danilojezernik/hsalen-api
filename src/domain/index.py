@@ -5,4 +5,6 @@ from dataclasses import dataclass
 class Index:
     naslov: str
     podnaslov: str
-    pomoc: str
+    pomoc_hipnoterapija: str
+    pomoc_jasnovidnsot: str
+    pomoc_medijstvo: str

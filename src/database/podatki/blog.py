@@ -7,6 +7,7 @@ blog = [
     asdict(
         Blog(
             naslov='Usoda duše',
+            tag='jasnovidnost',
             podnaslov='',
             datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Ali lahko spremenim svojo usodo? Odgovor je DA. Kako? Ali ni vse že v naprej določeno? Seveda '
@@ -39,6 +40,7 @@ blog = [
     asdict(
         Blog(
             naslov='Regresija v prejšnja življenja',
+            tag='medijstvo',
             podnaslov='',
             datum_vnosa=datetime.datetime.now(),
             vsebina='<p>V življenju se srečamo z mnogo izkušnjami in lekcijami za katere ne najdemo vzroka-pravega '
@@ -71,6 +73,7 @@ blog = [
     asdict(
         Blog(
             naslov='Intuicija',
+            tag='hipnoterapija',
             podnaslov='',
             datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Preprosto zaupaj svojim notranjim občutkom, ne dvomi v te občutke, ne dvomi vase, ne dovoli, '
@@ -88,6 +91,7 @@ blog = [
     asdict(
         Blog(
             naslov='Drevo življenja',
+            tag='regresija',
             podnaslov='Kar daješ, to dobiš',
             datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Misel je energija, večkrat razmišljamo o isti zadevi, začnemo o misli govorit v besedah, '
@@ -101,6 +105,7 @@ blog = [
     asdict(
         Blog(
             naslov='Hujšanje s pomočjo hipnoze',
+            tag='hipnoterapija',
             podnaslov='',
             datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Se želite znebiti odvečnih kilogramov? Ste poizkusili mnogo različnih diet?</p><p>Vedno kadar '
@@ -116,6 +121,7 @@ blog = [
     asdict(
         Blog(
             naslov='Odvajanje od kajenja s pomočjo hipnoze',
+            tag='hipnoterapija',
             podnaslov='',
             datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Mnogo ljudi me vpraša ali lahko preneham kadit s pomočjo hipnoze. Seveda lahko, s pomočjo '
@@ -142,6 +148,7 @@ blog = [
     asdict(
         Blog(
             naslov='Ljubezen',
+            tag='regresija',
             podnaslov='Največja in najmočnejša sila v vesolju',
             datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Obstaja veliko različnih sil – energij v vesolju, na Zemlji materialnih stvari, '
@@ -161,6 +168,7 @@ blog = [
     asdict(
         Blog(
             naslov='Certifikat za hipnoterapevta',
+            tag='hipnoterapija',
             podnaslov='',
             datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Leta 2016 sem uspešno opravil intenzivni mednarodni tečaj za hipnoterapevta na Omni Hypnosis '
@@ -176,6 +184,7 @@ blog = [
     asdict(
         Blog(
             naslov='Hipnoza in hipnoterapija',
+            tag='hipnoterapija',
             podnaslov='Mogočno orodje za izboljšanje kvalitete življenja',
             datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Ali je hipnoza nekaj hudega, nekaj resnega, mističnega, nevarnega? Šla bi na hipnozo vendar '

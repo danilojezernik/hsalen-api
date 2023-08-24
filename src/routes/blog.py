@@ -33,9 +33,22 @@ def get_blog_id(_id):
 
 
 # Edit by ID
-@blog_bp.route("/api/blog/<int:id>", methods=['POST'])
-def edit_blog(id):
-    return jsonify({'stran': f'BLOG z metodo POST: Uredi objavo {id}'})
+@blog_bp.route("/api/blog/edit/<_id>", methods=['POST'])
+def edit_blog(_id):
+    data = request.get_json()
+
+    if '_id' in data:
+        del data['_id']
+
+    result = db.proces.blog.update_one({'_id': ObjectId(_id)}, {'$set': data})
+
+    if result.modified_count > 0:
+        updated_document = db.proces.blog.find_one({'_id': ObjectId(_id)})
+        updated_document['_id'] = str(updated_document['_id'])
+        return jsonify({"message": "Objava uspešno posodobljena", "updated_document": updated_document})
+    else:
+        return jsonify({"error": "Objava bloga ni uspela!"})
+
 
 
 # Delete by ID
