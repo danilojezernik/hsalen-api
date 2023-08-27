@@ -8,8 +8,9 @@ from flask import jsonify, request
 from flask_openapi3 import APIBlueprint
 
 from src.database import db
+from src.operation_id import operation_id_callback
 
-global_error_bp = APIBlueprint("global_error", __name__)
+global_error_bp = APIBlueprint("global_error", __name__, operation_id_callback=operation_id_callback)
 
 
 # PRIDOBI VSE ERROR-je

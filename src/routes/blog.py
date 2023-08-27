@@ -6,13 +6,15 @@ from flask import jsonify, request
 from flask_jwt_extended import jwt_required
 from flask_openapi3 import APIBlueprint
 
-from src.database import db
 
-blog_bp = APIBlueprint("blog", __name__)
+from src.database import db
+from src.operation_id import operation_id_callback
+
+blog_bp = APIBlueprint("blog", __name__, operation_id_callback=operation_id_callback)
 
 
 # Get all blog
-@blog_bp.get("/api/blog")
+@blog_bp.get("/api/blog", )
 def get_blog():
     blog = dumps(db.proces.blog.find())
     return json.loads(blog)

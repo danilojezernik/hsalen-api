@@ -4,7 +4,9 @@ from flask import jsonify, request
 from flask_jwt_extended import create_access_token
 from flask_openapi3 import APIBlueprint
 
-login_bp = APIBlueprint("login", __name__)
+from src.operation_id import operation_id_callback
+
+login_bp = APIBlueprint("login", __name__, operation_id_callback=operation_id_callback)
 
 db_username = os.getenv('UPORABNIK')
 db_geslo = os.getenv('GESLO')
