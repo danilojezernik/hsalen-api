@@ -14,26 +14,25 @@ from src.routes.omeni import omeni_bp
 from src.routes.regresija import regresija_bp
 from src.routes.samohipnoza import samohipnoza_bp
 
-info = Info(title="book API", version="1.0.0")
-app = OpenAPI(__name__, info=info)
+app = OpenAPI(__name__)
 
 CORS(app, resources={r"/api/*": {"origins": "http://localhost:4200"}})
 
 app.secret_key = env.SECRET_KEY
 jwt = JWTManager(app)
 
-app.register_blueprint(index_bp)
-app.register_blueprint(blog_bp)
-app.register_blueprint(hipnoterapija_bp)
-app.register_blueprint(omeni_bp)
-app.register_blueprint(regresija_bp)
-app.register_blueprint(jasnovidnost_bp)
-app.register_blueprint(samohipnoza_bp)
-app.register_blueprint(medijstvo_bp)
-app.register_blueprint(global_error_bp)
+app.register_api(index_bp)
+app.register_api(blog_bp)
+app.register_api(hipnoterapija_bp)
+app.register_api(omeni_bp)
+app.register_api(regresija_bp)
+app.register_api(jasnovidnost_bp)
+app.register_api(samohipnoza_bp)
+app.register_api(medijstvo_bp)
+app.register_api(global_error_bp)
 
 
 if __name__ == '__main__':
-    db.drop()
-    db.seed()
+    # db.drop()
+    # db.seed()
     app.run(host='0.0.0.0', port=env.PORT, debug=True)

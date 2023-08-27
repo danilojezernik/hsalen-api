@@ -1,11 +1,11 @@
 import json
 
 from bson.json_util import dumps
-from flask import Blueprint
+from flask_openapi3 import APIBlueprint
 
 from src.database import db
 
-index_bp = Blueprint("index", __name__)
+index_bp = APIBlueprint("index", __name__)
 
 
 @index_bp.get("/api/index")
@@ -14,7 +14,7 @@ def get_index():
     return json.loads(index_txt)
 
 
-@index_bp.route("/api/index/knjiga", methods=['GET'])
+@index_bp.get("/api/index/knjiga")
 def get_knjiga():
     knjiga = dumps(db.proces.knjiga.find())
     return json.loads(knjiga)

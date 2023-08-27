@@ -1,14 +1,14 @@
 import json
 
 from bson.json_util import dumps
-from flask import Blueprint
+from flask_openapi3 import APIBlueprint
 
 from src.database import db
 
-jasnovidnost_bp = Blueprint('jasnovidnost', __name__)
+jasnovidnost_bp = APIBlueprint('jasnovidnost', __name__)
 
 
-@jasnovidnost_bp.route('/api/jasnovidnost')
+@jasnovidnost_bp.get('/api/jasnovidnost')
 def get_jasnovidnost():
     jasnovidnost = dumps(db.proces.jasnovidnost.find())
     return json.loads(jasnovidnost)
