@@ -1,9 +1,7 @@
-from dataclasses import asdict
-
 from src.domain.jasnovidnost import Jasnovidnost
 
 jasnovidnost = [
-    asdict(
+    dict(
         Jasnovidnost(
             naslov='Jasnovidnost',
             podnaslov='Samo prava resnica osvobodi človeka in pokaže pravo pot.',

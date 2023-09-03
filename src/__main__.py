@@ -3,6 +3,7 @@ from flask_jwt_extended import create_access_token, jwt_required, JWTManager
 from flask_openapi3 import OpenAPI, Info
 
 from src import env
+from src.database import db
 from src.routes.blog import blog_bp
 from src.routes.global_error import global_error_bp
 from src.routes.hipnoterapija import hipnoterapija_bp
@@ -14,7 +15,7 @@ from src.routes.regresija import regresija_bp
 from src.routes.samohipnoza import samohipnoza_bp
 
 
-info = Info(title='book API', version='1.0.0')
+info = Info(title='HSAlen API', version='1.0.0')
 app = OpenAPI(__name__, info=info)
 
 CORS(app)
@@ -33,6 +34,6 @@ app.register_api(medijstvo_bp)
 app.register_api(global_error_bp)
 
 if __name__ == '__main__':
-    # db.drop()
-    # db.seed()
+    db.drop()
+    db.seed()
     app.run(host='0.0.0.0', port=env.PORT, debug=True)

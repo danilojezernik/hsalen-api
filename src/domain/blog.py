@@ -1,11 +1,11 @@
 import datetime
-from dataclasses import dataclass
+
+from pydantic import BaseModel
 
 
-@dataclass
-class Blog:
+class Blog(BaseModel):
     naslov: str
     tag: str
     podnaslov: str
-    datum_vnosa: datetime
+    datum_vnosa: datetime.datetime
     vsebina: str

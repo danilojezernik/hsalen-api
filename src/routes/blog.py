@@ -1,4 +1,6 @@
 import json
+from typing import List
+
 from bson.json_util import dumps
 
 from bson import ObjectId
@@ -6,16 +8,16 @@ from flask import jsonify, request
 from flask_jwt_extended import jwt_required
 from flask_openapi3 import APIBlueprint
 
-
 from src.database import db
+from src.domain.blog import Blog
 from src.operation_id import operation_id_callback
 
 blog_bp = APIBlueprint("blog", __name__, operation_id_callback=operation_id_callback)
 
 
 # Get all blog
-@blog_bp.get("/api/blog", )
-def get_blog():
+@blog_bp.get("/api/blog", responses={200: Blog})
+async def get_blog() -> List[Blog]:
     blog = dumps(db.proces.blog.find())
     return json.loads(blog)
 
@@ -34,14 +36,20 @@ def post_blog():
 @blog_bp.get("/api/blog/<_id>")
 def get_blog_id(_id):
     blog_id = dumps(db.proces.blog.find_one({'_id': ObjectId(_id)}))
-    return json.loads(blog_id)
+    if blog_id:
+        return json.loads(blog_id)
+    else:
+        return jsonify({'error': 'Blog ni najden'}), 404
 
 
 # POST by ID
 @blog_bp.post("/api/blog/<_id>")
 def post_blog_id(_id):
     blog_id = dumps(db.proces.blog.find_one({'_id': ObjectId(_id)}))
-    return json.loads(blog_id)
+    if blog_id:
+        return json.loads(blog_id)
+    else:
+        return jsonify({'error': 'Blog ni najden'}), 404
 
 
 # Edit by ID
@@ -53,14 +61,16 @@ def edit_blog(_id):
     if '_id' in data:
         del data['_id']
 
-    result = db.proces.blog.update_one({'_id': ObjectId(_id)}, {'$set': data})
-    if result.modified_count > 0:
-        updated_document = db.proces.blog.find_one({'_id': ObjectId(_id)})
-        updated_document['_id'] = str(updated_document['_id'])
-        return jsonify({"message": "Objava uspešno posodobljena", "updated_document": updated_document})
-    else:
-        return jsonify({"error": "Objava bloga ni uspela!"})
-
+    try:
+        result = db.proces.blog.update_one({'_id': ObjectId(_id)}, {'$set': data})
+        if result.modified_count > 0:
+            updated_document = db.proces.blog.find_one({'_id': ObjectId(_id)})
+            updated_document['_id'] = str(updated_document['_id'])
+            return jsonify({"message": "Objava uspešno posodobljena", "updated_document": updated_document})
+        else:
+            return jsonify({"error": "Objava bloga ni uspela!"})
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 # Delete by ID
 @blog_bp.delete("/api/blog/delete/<_id>")

@@ -1,8 +1,7 @@
-from dataclasses import dataclass
+from pydantic import BaseModel
 
 
-@dataclass
-class Samohipnoza:
+class Samohipnoza(BaseModel):
     naslov: str
     podnaslov: str
     samohipnoza: str

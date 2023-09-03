@@ -1,9 +1,7 @@
-from dataclasses import asdict
-
 from src.domain.samohipnoza import Samohipnoza
 
 samohipnoza = [
-    asdict(
+    dict(
         Samohipnoza(
             naslov='Samohipnoza',
             podnaslov='Naučite se sami dosegati globoko hipnotično stanje brez napora!',
