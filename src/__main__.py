@@ -5,9 +5,14 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from src import env
 from src.database import db
+from src.routes import index
+from src.routes import admin
+from src.routes import login
 from src.routes import blog
 from src.routes import global_error
 from src.routes import samohipnoza
+from src.routes import jasnovidnost
+from src.routes import hipnoterapija
 
 
 app = FastAPI(prefix="/api")
@@ -22,8 +27,13 @@ app.add_middleware(
 
 app.secret_key = env.SECRET_KEY
 
+app.include_router(index.router, prefix="/index", tags=['index'])
 app.include_router(blog.router, prefix="/blog", tags=['blog'])
+app.include_router(login.router, prefix="/login", tags=['login'])
+app.include_router(admin.router, prefix="/admin", tags=['admin'])
 app.include_router(samohipnoza.router, prefix="/samohipnoza", tags=['samohipnoza'])
+app.include_router(jasnovidnost.router, prefix="/jasnovidnost", tags=['jasnovidnost'])
+app.include_router(hipnoterapija.router, prefix="/hipnoterapija", tags=['hipnoterapija'])
 app.include_router(global_error.router, prefix="/global_error", tags=['global_error'])
 
 if __name__ == '__main__':
