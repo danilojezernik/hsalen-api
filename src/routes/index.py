@@ -7,13 +7,13 @@ from src.domain.knjiga import Knjiga
 router = APIRouter()
 
 
-@router.get("/api/index")
-def get_index() -> list[Index]:
+@router.get("/")
+async def get_index() -> list[Index]:
     cursor = db.proces.index.find()
     return [Index(**document) for document in cursor]
 
 
-@router.get("/api/index/knjiga")
-def get_knjiga() -> list[Knjiga]:
+@router.get("/knjiga")
+async def get_knjiga() -> list[Knjiga]:
     cursor = db.proces.knjiga.find()
     return [Knjiga(**document) for document in cursor]

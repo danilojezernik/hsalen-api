@@ -1,28 +1,35 @@
 import os
 
-from flask import jsonify, request
-from flask_jwt_extended import create_access_token
-from flask_openapi3 import APIBlueprint
+from typing import Annotated
+from fastapi import Depends, APIRouter
+from fastapi.security import OAuth2PasswordBearer
 
-from src.operation_id import operation_id_callback
+from flask import request
 
-login_bp = APIBlueprint("login", __name__, operation_id_callback=operation_id_callback)
+router = APIRouter()
 
 db_username = os.getenv('UPORABNIK')
 db_geslo = os.getenv('GESLO')
 
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+
+# Setting up FastAPI security
+@router.get("/")
+async def read_items(token: Annotated[str, Depends(oauth2_scheme)]):
+    return {"token": token}
+
 
 # LOGIN
-@login_bp.post("/api/login")
-def login():
+@router.post("/")
+async def login():
     username = request.json.get("username")
     password = request.json.get("password")
 
     if not username or not password:
-        return jsonify({"msg": "Missing username or password"}), 400
+        return {"msg": "Missing username or password"}, 400
 
     if username != db_username or password != db_geslo:
-        return jsonify({"msg": "Bad username or password"}), 401
+        return {"msg": "Bad username or password"}, 401
 
-    access_token = create_access_token(identity=username)
-    return jsonify(access_token=access_token)
+    return {'access_token': 'access_token'}

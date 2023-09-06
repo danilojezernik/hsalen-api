@@ -7,6 +7,6 @@ router = APIRouter()
 
 
 @router.get("/")
-def get_hipnoterapija() -> list[Hipnoterapija]:
+async def get_hipnoterapija() -> list[Hipnoterapija]:
     cursor = db.proces.hipnoterapija.find()
     return [Hipnoterapija(**document) for document in cursor]
