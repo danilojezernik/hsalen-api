@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 
+from pydantic import BaseModel
 
-@dataclass
-class Knjiga:
+
+class Knjiga(BaseModel):
     naslov: str
     podnaslov: str
     opis: str

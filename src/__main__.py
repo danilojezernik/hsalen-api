@@ -1,39 +1,31 @@
-from flask_cors import CORS
-from flask_jwt_extended import create_access_token, jwt_required, JWTManager
-from flask_openapi3 import OpenAPI, Info
+import uvicorn
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 
 from src import env
 from src.database import db
-from src.routes.blog import blog_bp
-from src.routes.global_error import global_error_bp
-from src.routes.hipnoterapija import hipnoterapija_bp
-from src.routes.index import index_bp
-from src.routes.jasnovidnost import jasnovidnost_bp
-from src.routes.medijstvo import medijstvo_bp
-from src.routes.omeni import omeni_bp
-from src.routes.regresija import regresija_bp
-from src.routes.samohipnoza import samohipnoza_bp
+from src.routes import blog
+from src.routes import global_error
+from src.routes import samohipnoza
 
 
-info = Info(title='HSAlen API', version='1.0.0')
-app = OpenAPI(__name__, info=info)
+app = FastAPI(prefix="/api")
 
-CORS(app)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.secret_key = env.SECRET_KEY
-jwt = JWTManager(app)
 
-app.register_api(index_bp)
-app.register_api(blog_bp)
-app.register_api(hipnoterapija_bp)
-app.register_api(omeni_bp)
-app.register_api(regresija_bp)
-app.register_api(jasnovidnost_bp)
-app.register_api(samohipnoza_bp)
-app.register_api(medijstvo_bp)
-app.register_api(global_error_bp)
+app.include_router(blog.router, prefix="/blog", tags=['blog'])
+app.include_router(samohipnoza.router, prefix="/samohipnoza", tags=['samohipnoza'])
+app.include_router(global_error.router, prefix="/global_error", tags=['global_error'])
 
 if __name__ == '__main__':
     db.drop()
     db.seed()
-    app.run(host='0.0.0.0', port=env.PORT, debug=True)
+    uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 
+from pydantic import BaseModel
 
-@dataclass
-class Mediji:
+
+class Mediji(BaseModel):
     naslov_mediji: str
     opis_mediji: str
     video_mediji: str

@@ -1,86 +1,57 @@
-import json
-from typing import List
-
-from bson.json_util import dumps
-
-from bson import ObjectId
-from flask import jsonify, request
-from flask_jwt_extended import jwt_required
-from flask_openapi3 import APIBlueprint
+from fastapi import APIRouter
 
 from src.database import db
 from src.domain.blog import Blog
-from src.operation_id import operation_id_callback
 
-blog_bp = APIBlueprint("blog", __name__, operation_id_callback=operation_id_callback)
+router = APIRouter()
 
 
 # Get all blog
-@blog_bp.get("/api/blog", responses={200: Blog})
-async def get_blog() -> List[Blog]:
-    blog = dumps(db.proces.blog.find())
-    return json.loads(blog)
+@router.get("/")
+async def get_blog() -> list[Blog]:
+    cursor = db.proces.blog.find()
+    return [Blog(**document) for document in cursor]
 
 
 # Update blog
-@blog_bp.post("/api/blog")
-@jwt_required()
-def post_blog():
-    data = request.get_json()
-    if data is not None:
-        db.proces.blog.insert_one(data)
-        return jsonify({'message': 'Objava uspešno dodana'})
+@router.post("/")
+async def post_blog(blog: Blog) -> Blog:
+    cursor = db.proces.blog.insert_one(blog)
+    return Blog(**cursor)
 
 
 # Get by ID
-@blog_bp.get("/api/blog/<_id>")
-def get_blog_id(_id):
-    blog_id = dumps(db.proces.blog.find_one({'_id': ObjectId(_id)}))
-    if blog_id:
-        return json.loads(blog_id)
-    else:
-        return jsonify({'error': 'Blog ni najden'}), 404
+@router.get("/{_id}")
+async def get_blog_id(_id: str) -> Blog:
+    cursor = db.proces.blog.find_one({'_id': _id})
+    return Blog(**cursor)
 
 
 # POST by ID
-@blog_bp.post("/api/blog/<_id>")
-def post_blog_id(_id):
-    blog_id = dumps(db.proces.blog.find_one({'_id': ObjectId(_id)}))
-    if blog_id:
-        return json.loads(blog_id)
-    else:
-        return jsonify({'error': 'Blog ni najden'}), 404
+@router.post("/{_id}")
+async def post_blog_id(_id: str) -> Blog:
+    cursor = db.proces.blog.find_one({'_id': _id})
+    return Blog(**cursor)
 
 
 # Edit by ID
-@blog_bp.post("/api/blog/edit/<_id>")
-@jwt_required()
-def edit_blog(_id):
-    data = request.get_json()
+@router.post("/edit/{_id}")
+async def edit_blog(_id: str, blog: Blog) -> Blog:
 
-    if '_id' in data:
-        del data['_id']
+    if '_id' in blog:
+        blog = blog.dict()
+        del blog['_id']
 
-    try:
-        result = db.proces.blog.update_one({'_id': ObjectId(_id)}, {'$set': data})
-        if result.modified_count > 0:
-            updated_document = db.proces.blog.find_one({'_id': ObjectId(_id)})
-            updated_document['_id'] = str(updated_document['_id'])
-            return jsonify({"message": "Objava uspešno posodobljena", "updated_document": updated_document})
-        else:
-            return jsonify({"error": "Objava bloga ni uspela!"})
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+    cursor = db.proces.blog.update_one({'_id': _id}, {'$set': blog})
+    if cursor.modified_count > 0:
+        updated_document = db.proces.blog.find_one({'_id': _id})
+        updated_document['_id'] = str(updated_document['_id'])
+
+    return Blog(**cursor)
+
 
 # Delete by ID
-@blog_bp.delete("/api/blog/delete/<_id>")
-@jwt_required()
-def delete_blog(_id):
-    try:
-        result = db.proces.blog.delete_one({'_id': ObjectId(_id)})
-        if result.deleted_count > 0:
-            return jsonify({'message': 'Blog deleted'}), 200
-        else:
-            return jsonify({'error': 'Blog not found'}), 404
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
+@router.delete("/{_id}")
+async def delete_blog(_id: str) -> Blog:
+    cursor = db.proces.blog.delete_one({'_id': _id})
+    return Blog(**cursor)

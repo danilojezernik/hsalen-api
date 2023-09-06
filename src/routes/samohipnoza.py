@@ -1,17 +1,12 @@
-import json
-from typing import List
-
-from bson.json_util import dumps
-from flask_openapi3 import APIBlueprint
+from fastapi import APIRouter
 
 from src.database import db
 from src.domain.samohipnoza import Samohipnoza
-from src.operation_id import operation_id_callback
 
-samohipnoza_bp = APIBlueprint('samohipnoza', __name__, operation_id_callback=operation_id_callback)
+router = APIRouter()
 
 
-@samohipnoza_bp.get('/api/samohipnoza', responses={200: Samohipnoza})
-def get_samohipnoza() -> List[Samohipnoza]:
-    samohipnoza = dumps(db.proces.samohipnoza.find())
-    return json.loads(samohipnoza)
+@router.get('/')
+async def get_samohipnoza() -> list[Samohipnoza]:
+    cursor = db.proces.samohipnoza.find()
+    return [Samohipnoza(**document) for document in cursor]

@@ -1,62 +1,42 @@
-
-import json
-
-from bson import ObjectId
-from bson.json_util import dumps
-
-from flask import jsonify, request
-from flask_openapi3 import APIBlueprint
+from fastapi import APIRouter
 
 from src.database import db
-from src.operation_id import operation_id_callback
+from src.domain.global_error import GlobalError
 
-global_error_bp = APIBlueprint("global_error", __name__, operation_id_callback=operation_id_callback)
-
-
-# PRIDOBI VSE ERROR-je
-@global_error_bp.get("/api/error")
-def get_error():
-    blog = dumps(db.proces.error.find())
-    return json.loads(blog)
+router = APIRouter()
 
 
-@global_error_bp.post('/api/error/<_id>')
-def post_error_id(_id):
-    error = dumps(db.proces.error.find_one({'_id': ObjectId(_id)}))
-    return json.loads(error)
+@router.get("/")
+async def get_error() -> list[GlobalError]:
+    cursor = db.proces.error.find()
+    return [GlobalError(**document) for document in cursor]
 
 
-@global_error_bp.get('/api/error/<_id>')
-def get_error_id(_id):
-    error = dumps(db.proces.error.find_one({'_id': ObjectId(_id)}))
-    return json.loads(error)
+@router.post('/{_id}')
+async def post_error_id(_id: str) -> GlobalError:
+    cursor = db.proces.error.find_one({'_id': _id})
+    return GlobalError(**cursor)
 
 
-# DODAJ NOV ERROR
-@global_error_bp.post("/api/error")
-def post_error():
-    data = request.get_json()
-    if data is not None:
-        db.proces.error.insert_one(data)
-        return jsonify({'message': 'Error added successfully!'})
+@router.get('/{_id}')
+async def get_error_id(_id: str) -> GlobalError:
+    cursor = db.proces.error.find_one({'_id': _id})
+    return GlobalError(**cursor)
 
 
-@global_error_bp.delete('/api/error/delete_all')
-def delete_all_errors():
-    try:
-        db.proces.error.delete_many({})
-        return jsonify({'message': 'All errors deleted successfully!'})
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+@router.post("/")
+async def post_error(error: GlobalError) -> GlobalError:
+    cursor = db.proces.error.insert_one(error)
+    return GlobalError(**cursor)
 
 
-@global_error_bp.delete('/api/error/delete/<_id>')
-def delete_error_by_id(_id):
-    try:
-        result = db.proces.error.delete_one({'_id': ObjectId(_id)})
-        if result.deleted_count > 0:
-            return jsonify({'message': 'Error deleted'}), 200
-        else:
-            return jsonify({'error': 'Error not found'}), 404
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+@router.delete('/')
+async def delete_all_errors() -> list[GlobalError]:
+    cursor = db.proces.error.delete_many({})
+    return [GlobalError(**document) for document in cursor]
+
+
+@router.delete('/{_id}')
+def delete_error_by_id(_id: str) -> GlobalError:
+    cursor = db.proces.error.delete_one({'_id': _id})
+    return GlobalError(**cursor)

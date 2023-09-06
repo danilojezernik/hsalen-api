@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
+from pydantic import BaseModel
 
-@dataclass
-class Jaz:
+
+class Jaz(BaseModel):
     ime_priimek: str
     o_meni: str

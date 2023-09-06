@@ -1,14 +1,9 @@
-from flask import jsonify
-from flask_jwt_extended import jwt_required
-from flask_openapi3 import APIBlueprint
+from fastapi import APIRouter
 
-from src.operation_id import operation_id_callback
-
-admin_bp = APIBlueprint("admin", __name__, operation_id_callback=operation_id_callback)
+router = APIRouter()
 
 
 # ADMIN
-@admin_bp.post("/api/admin")
-@jwt_required()
-def admin():
-    return jsonify({'msg': 'Ste vpisani!'})
+@router.post("/")
+async def post():
+    return {'msg': 'Ste vpisani!'}

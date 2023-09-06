@@ -1,8 +1,10 @@
-from dataclasses import dataclass
+from typing import Optional
+
+from pydantic import BaseModel, Field
 
 
-@dataclass
-class Hipnoterapija:
+class Hipnoterapija(BaseModel):
+    id: Optional[str] = Field(alias='_id')
     naslov: str
     podnaslov: str
     hipnoza: str

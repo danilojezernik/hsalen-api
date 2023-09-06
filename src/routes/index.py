@@ -1,21 +1,19 @@
-import json
-
-from bson.json_util import dumps
-from flask_openapi3 import APIBlueprint
+from fastapi import APIRouter
 
 from src.database import db
-from src.operation_id import operation_id_callback
+from src.domain.index import Index
+from src.domain.knjiga import Knjiga
 
-index_bp = APIBlueprint("index", __name__, operation_id_callback=operation_id_callback)
-
-
-@index_bp.get("/api/index")
-def get_index():
-    index_txt = dumps(db.proces.index.find())
-    return json.loads(index_txt)
+router = APIRouter()
 
 
-@index_bp.get("/api/index/knjiga")
-def get_knjiga():
-    knjiga = dumps(db.proces.knjiga.find())
-    return json.loads(knjiga)
+@router.get("/api/index")
+def get_index() -> list[Index]:
+    cursor = db.proces.index.find()
+    return [Index(**document) for document in cursor]
+
+
+@router.get("/api/index/knjiga")
+def get_knjiga() -> list[Knjiga]:
+    cursor = db.proces.knjiga.find()
+    return [Knjiga(**document) for document in cursor]

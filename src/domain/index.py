@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 
+from pydantic import BaseModel
 
-@dataclass
-class Index:
+
+class Index(BaseModel):
     naslov: str
     podnaslov: str
     pomoc_hipnoterapija: str

@@ -1,8 +1,9 @@
 from dataclasses import dataclass
 
+from pydantic import BaseModel
 
-@dataclass
-class Regresija:
+
+class Regresija(BaseModel):
     naslov: str
     podnaslov: str
     regresija: str

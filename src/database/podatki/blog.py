@@ -3,7 +3,6 @@ import datetime
 from src.domain.blog import Blog
 
 blog = [
-    dict(
         Blog(
             naslov='Usoda duše',
             tag='jasnovidnost',
@@ -34,10 +33,7 @@ blog = [
                     'utelešat. Tukaj odpade izgovor ENKRAT SE ŽIVI. To je samo opravičilo za naša dejanja za katera '
                     'vemo, da tisti dani trenutek niso dobra in v skladu z našo pravo potjo usode.</p><p>Želim vam, '
                     'da se znajdete na pravi poti, na dogovorjeni poti. SPREMEMBA USODE</p> '
-        )
-    )
-    ,
-    dict(
+        ).dict(by_alias=True),
         Blog(
             naslov='Regresija v prejšnja življenja',
             tag='medijstvo',
@@ -68,8 +64,7 @@ blog = [
                     'si ne želi bolezni, finančnih izgub, težavnih partnerskih vezi, nesreče v ljubezni, '
                     'težave z otroci, itd.</p><p>Na koncu hrepenimo samo po ljubezni, vse ostaloooo...</p><p>Lep dan '
                     'vam želim.</p>'
-        )),
-    dict(
+        ).dict(by_alias=True),
         Blog(
             naslov='Intuicija',
             tag='hipnoterapija',
@@ -85,8 +80,7 @@ blog = [
                     'Prisoten je z namenom, da sami sebe blokiramo in ne poslušamo intuicije.</p><p>Vsi imamo svoj '
                     'namen utelešenja, vsi imamo v naprej dogovorjeno pot, intuicija pa nam pomaga prepoznati '
                     'občutke, kaj je za nas v določeni situaciji najbolje.</p> '
-        )),
-    dict(
+        ).dict(by_alias=True),
         Blog(
             naslov='Drevo življenja',
             tag='regresija',
@@ -98,8 +92,7 @@ blog = [
                     'lahko posadimo plevel ali pa mogočno lepo zdravo drevo. Izbira je svobodna in samo naša.</p><p>S '
                     'hipnozo in hipnoterapijo lahko izboljšamo naše misli in kvaliteto življenja, ter izberemo '
                     'drevo.</p><p>Pokličite, se naročite in se sami prepričate česa ste zmožni.</p> '
-        )),
-    dict(
+        ).dict(by_alias=True),
         Blog(
             naslov='Hujšanje s pomočjo hipnoze',
             tag='hipnoterapija',
@@ -113,8 +106,7 @@ blog = [
                     'pravi vzrok in ga nevtraliziramo za zmeraj.</p><p>Tukaj se potem začne nadaljnje delo, '
                     'hujšanje s pomočjo hipnoze.</p><p>Cilj hujšanja s tehniko hipnoze je izguba kilogramov za vedno '
                     'in izboljšati samozavest, samoljubezen, samodisciplino, samopodobo in samospoštovanje.</p> '
-        )),
-    dict(
+        ).dict(by_alias=True),
         Blog(
             naslov='Odvajanje od kajenja s pomočjo hipnoze',
             tag='hipnoterapija',
@@ -139,8 +131,7 @@ blog = [
                     'klientu in njegovemu načinu življenja ter razmišljanja. Tudi ne obsojam kadilcev, '
                     'to je enostavno svobodna volja in izbira vsakega posameznika. Vsak ima svoje življenje in svoj '
                     'življenjski slog, svojo izbiro in prav je tako.</p> '
-        )),
-    dict(
+        ).dict(by_alias=True),
         Blog(
             naslov='Ljubezen',
             tag='regresija',
@@ -158,8 +149,7 @@ blog = [
                     'ljubljen-na.</p><p>Ta najmočnejša sila ne pride sama od sebe, če pa že, jo pa moraš znat negovat '
                     'in spoštovat in ne imeti za samoumevno.</p><p>Eh ta ljubezen, lepa in zanimiva…..pa vendar '
                     'NAJMOČNEJŠA, NAJLEPŠA….</p><p>LEPO JE LJUBITI IN BITI LJUBLJEN.</p><p>Hvala vesolje!!!</p> '
-        )),
-    dict(
+        ).dict(by_alias=True),
         Blog(
             naslov='Certifikat za hipnoterapevta',
             tag='hipnoterapija',
@@ -173,8 +163,7 @@ blog = [
                     'terapija mi daje nov zagon in novo izkušnjo, kar pa vestno uporabljam pri svojem delu! Delo '
                     'opravljam s srcem in razumevanjem in vsekakor mi je pomembno, da se vsak, ki se sreča z menoj, '
                     'tudi dobro počuti in izboljša svojo kvaliteto življenja na področjih, kjer ima težave.</p> '
-        )),
-    dict(
+        ).dict(by_alias=True),
         Blog(
             naslov='Hipnoza in hipnoterapija',
             tag='hipnoterapija',
@@ -304,5 +293,5 @@ blog = [
                     'SKRATKA ODLOČIL SI SE, ODLOČIL SI SE ZA HIPNOTERAPIJO.</p><p>Bodi ponosen in hvaležen sam sebi, '
                     'jaz sem ti pa hvaležen, da si me izbral in da si mi zaupal.</p><p>Z veseljem za vas, '
                     'vaš hipnoterapevt</p> '
-        ))
+        ).dict(by_alias=True)
 ]

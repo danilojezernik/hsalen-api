@@ -1,15 +1,12 @@
-import json
-
-from bson.json_util import dumps
-from flask_openapi3 import APIBlueprint
+from fastapi import APIRouter
 
 from src.database import db
-from src.operation_id import operation_id_callback
+from src.domain.hipnoterapija import Hipnoterapija
 
-hipnoterapija_bp = APIBlueprint("hipnoterapija", __name__, operation_id_callback=operation_id_callback)
+router = APIRouter()
 
 
-@hipnoterapija_bp.get("/api/hipnoterapija")
-def get_hipnoterapija():
-    hipnoterapija = dumps(db.proces.hipnoterapija.find())
-    return json.loads(hipnoterapija)
+@router.get("/")
+def get_hipnoterapija() -> list[Hipnoterapija]:
+    cursor = db.proces.hipnoterapija.find()
+    return [Hipnoterapija(**document) for document in cursor]
