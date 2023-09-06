@@ -13,9 +13,10 @@ from src.routes import global_error
 from src.routes import samohipnoza
 from src.routes import jasnovidnost
 from src.routes import hipnoterapija
+from src.routes.tags_metadata import tags_metadata
 
 
-app = FastAPI(prefix="/api")
+app = FastAPI(prefix="/api", openapi_tags=tags_metadata)
 
 app.add_middleware(
     CORSMiddleware,
