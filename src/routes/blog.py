@@ -35,22 +35,25 @@ async def post_one(blog: Blog) -> Blog | None:
 
 
 # Edit by ID
-@router.post("/edit/{_id}", operation_id="edit_blog")
-async def edit_blog(_id: str, blog: Blog) -> Blog:
-    if '_id' in blog:
-        blog = blog.dict()
-        del blog['_id']
+@router.put("/{_id}", operation_id="edit_blog")
+async def edit_blog(_id: str, blog: Blog) -> Blog | None:
+    blog = blog.dict(by_alias=True)
+    del blog['_id']
 
     cursor = db.proces.blog.update_one({'_id': _id}, {'$set': blog})
     if cursor.modified_count > 0:
         updated_document = db.proces.blog.find_one({'_id': _id})
-        updated_document['_id'] = str(updated_document['_id'])
-
-    return Blog(**cursor)
+        if updated_document:
+            updated_document['_id'] = str(updated_document['_id'])
+            return Blog(**updated_document)
+    return None
 
 
 # Delete by ID
 @router.delete("/{_id}", operation_id="delete_blog")
-async def delete_blog(_id: str) -> Blog:
-    cursor = db.proces.blog.delete_one({'_id': _id})
-    return Blog(**cursor)
+async def delete_blog(_id: str) -> dict:
+    delete_result = db.proces.blog.delete_one({'_id': _id})
+    if delete_result.deleted_count > 0:
+        return {"message": "Blog deleted successfully"}
+    else:
+        return {"message": "Blog not found"}

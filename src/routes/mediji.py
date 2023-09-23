@@ -14,7 +14,7 @@ def get_mediji() -> list[Mediji]:
 
 
 # GET MEDIJI BY ID
-@router.get("/{_id}", operation_id="get_blog_by_id")
+@router.get("/{_id}", operation_id="get_mediji_by_id")
 async def get_mediji_id(_id: str):
     cursor = db.proces.mediji.find_one({'_id': _id})
     if cursor is None:
@@ -27,7 +27,7 @@ async def get_mediji_id(_id: str):
 @router.post("/", operation_id="add_mediji")
 async def post_one(mediji: Mediji) -> Mediji | None:
     mediji_dict = mediji.dict(by_alias=True)
-    insert_result = db.proces.blog.insert_one(mediji_dict)
+    insert_result = db.proces.mediji.insert_one(mediji_dict)
     if insert_result.acknowledged:
         mediji_dict['_id'] = str(insert_result.inserted_id)
         return Mediji(**mediji_dict)
@@ -35,22 +35,25 @@ async def post_one(mediji: Mediji) -> Mediji | None:
 
 
 # EDIT MEDIJI
-@router.post("/edit/{_id}", operation_id="edit_mediji")
-async def edit_blog(_id: str, mediji: Mediji) -> Mediji:
-    if '_id' in mediji:
-        mediji = mediji.dict()
-        del mediji['_id']
+@router.put("/{_id}", operation_id="edit_mediji")
+async def edit_mediji(_id: str, mediji: Mediji) -> Mediji | None:
+    mediji = mediji.dict(by_alias=True)
+    del mediji['_id']
 
     cursor = db.proces.mediji.update_one({'_id': _id}, {'$set': mediji})
     if cursor.modified_count > 0:
         updated_document = db.proces.mediji.find_one({'_id': _id})
-        updated_document['_id'] = str(updated_document['_id'])
-
-    return Mediji(**cursor)
+        if updated_document:
+            updated_document['_id'] = str(updated_document['_id'])
+            return Mediji(**cursor)
+    return None
 
 
 # DELETE MEDIJI
 @router.delete("/{_id}", operation_id="delete_mediji")
-async def delete_blog(_id: str) -> Mediji:
-    cursor = db.proces.mediji.delete_one({'_id': _id})
-    return Mediji(**cursor)
+async def delete_mediji(_id: str) -> dict:
+    delete_result = db.proces.mediji.delete_one({'_id': _id})
+    if delete_result.deleted_count > 0:
+        return {"message": "Mediji deleted successfully"}
+    else:
+        return {"message": "Mediji not found"}
