@@ -1,4 +1,4 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 
 from src.database import db
 from src.domain.blog import Blog
@@ -6,38 +6,37 @@ from src.domain.blog import Blog
 router = APIRouter()
 
 
-# Get all blog
-@router.get("/")
-async def get_blog() -> list[Blog]:
+# GET ALL BLOG
+@router.get("/", operation_id="get_all_blogs")
+async def get_all() -> list[Blog]:
     cursor = db.proces.blog.find()
     return [Blog(**document) for document in cursor]
 
 
-# Update blog
-@router.post("/")
-async def post_blog(blog: Blog) -> Blog:
-    cursor = db.proces.blog.insert_one(blog)
-    return Blog(**cursor)
-
-
 # Get by ID
-@router.get("/{_id}")
-async def get_blog_id(_id: str) -> Blog:
+@router.get("/{_id}", operation_id="get_blog_by_id")
+async def get_blog_id(_id: str):
     cursor = db.proces.blog.find_one({'_id': _id})
-    return Blog(**cursor)
+    if cursor is None:
+        return HTTPException(status_code=400, detail=f"Blog by ID:{_id} does not exist")
+    else:
+        return Blog(**cursor)
 
 
-# POST by ID
-@router.post("/{_id}")
-async def post_blog_id(_id: str) -> Blog:
-    cursor = db.proces.blog.find_one({'_id': _id})
-    return Blog(**cursor)
+# ADD BLOG
+@router.post("/", operation_id="add_blog")
+async def post_one(blog: Blog) -> Blog | None:
+    blog_dict = blog.dict(by_alias=True)
+    insert_result = db.proces.blog.insert_one(blog_dict)
+    if insert_result.acknowledged:
+        blog_dict['_id'] = str(insert_result.inserted_id)
+        return Blog(**blog_dict)
+    return None
 
 
 # Edit by ID
-@router.post("/edit/{_id}")
+@router.post("/edit/{_id}", operation_id="edit_blog")
 async def edit_blog(_id: str, blog: Blog) -> Blog:
-
     if '_id' in blog:
         blog = blog.dict()
         del blog['_id']
@@ -51,7 +50,7 @@ async def edit_blog(_id: str, blog: Blog) -> Blog:
 
 
 # Delete by ID
-@router.delete("/{_id}")
+@router.delete("/{_id}", operation_id="delete_blog")
 async def delete_blog(_id: str) -> Blog:
     cursor = db.proces.blog.delete_one({'_id': _id})
     return Blog(**cursor)

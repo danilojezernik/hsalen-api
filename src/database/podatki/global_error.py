@@ -1,5 +1,3 @@
-from dataclasses import asdict
-
 from src.domain.global_error import GlobalError
 
 global_error = [

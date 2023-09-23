@@ -10,5 +10,5 @@ class Blog(BaseModel):
     naslov: str
     tag: str
     podnaslov: str
-    datum_vnosa: datetime.datetime
+    datum_vnosa: datetime.datetime = Field(default_factory=datetime.datetime.now)
     vsebina: str
