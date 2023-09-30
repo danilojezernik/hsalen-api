@@ -1,12 +1,15 @@
 from pymongo import MongoClient
 
 from src import env
-from src.database.podatki.blog import blog
-from src.database.podatki.global_error import global_error
-from src.database.podatki.mediji import mediji
+from src.database.blog import blog
+from src.database.global_error import global_error
+from src.database.mediji import mediji
 
 client = MongoClient(env.DB_CONNECTION)
 proces = client[env.DB_PROCES]
+
+
+
 
 
 def drop():

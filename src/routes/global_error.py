@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from src.database import db
+from src.services import db
 from src.domain.global_error import GlobalError
 
 router = APIRouter()

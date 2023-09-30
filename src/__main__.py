@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from src import env
-from src.database import db
+from src.services import db
 from src.routes import mediji, admin, login, blog, global_error
 from src.tags_metadata import tags_metadata
 
