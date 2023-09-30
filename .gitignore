@@ -1,3 +1,5 @@
 venv
 .env
 .idea!/.idea/
+
+!fake_users_db.py

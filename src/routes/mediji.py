@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 
-from src.database import db
+from src.services import db
 from src.domain.mediji import Mediji
 
 router = APIRouter()
@@ -18,7 +18,7 @@ def get_mediji() -> list[Mediji]:
 async def get_mediji_id(_id: str):
     cursor = db.proces.mediji.find_one({'_id': _id})
     if cursor is None:
-        return HTTPException(status_code=400, detail=f"Mediji by ID:{_id} does not exist")
+        return HTTPException(status_code=404, detail=f"Mediji by ID:{_id} does not exist")
     else:
         return Mediji(**cursor)
 
@@ -45,15 +45,16 @@ async def edit_mediji(_id: str, mediji: Mediji) -> Mediji | None:
         updated_document = db.proces.mediji.find_one({'_id': _id})
         if updated_document:
             updated_document['_id'] = str(updated_document['_id'])
-            return Mediji(**cursor)
+            return Mediji(**updated_document)
     return None
 
 
 # DELETE MEDIJI
 @router.delete("/{_id}", operation_id="delete_mediji")
-async def delete_mediji(_id: str) -> dict:
+async def delete_mediji(_id: str):
     delete_result = db.proces.mediji.delete_one({'_id': _id})
     if delete_result.deleted_count > 0:
-        return {"message": "Mediji deleted successfully"}
+        return {"message": f"Mediji with id:({_id}) deleted successfully"}
     else:
-        return {"message": "Mediji not found"}
+        return HTTPException(status_code=404, detail=f"Mediji by ID:({_id}) not found")
+

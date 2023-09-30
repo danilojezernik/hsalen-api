@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 
-from src.database import db
+from src.services import db
 from src.domain.blog import Blog
 
 router = APIRouter()
@@ -51,9 +51,9 @@ async def edit_blog(_id: str, blog: Blog) -> Blog | None:
 
 # Delete by ID
 @router.delete("/{_id}", operation_id="delete_blog")
-async def delete_blog(_id: str) -> dict:
+async def delete_blog(_id: str):
     delete_result = db.proces.blog.delete_one({'_id': _id})
     if delete_result.deleted_count > 0:
         return {"message": "Blog deleted successfully"}
     else:
-        return {"message": "Blog not found"}
+        return HTTPException(status_code=404, detail=f"Blog by ID:({_id}) not found")
