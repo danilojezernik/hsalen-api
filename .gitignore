@@ -2,4 +2,4 @@ venv
 .env
 .idea!/.idea/
 
-!fake_users_db.py
+/src/domain/fake_users_db.py
