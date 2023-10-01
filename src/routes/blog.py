@@ -9,11 +9,13 @@ Routes:
 5. Delete a blog by ID
 """
 
+# Import necessary modules and classes
 from fastapi import APIRouter, HTTPException, Depends
 from src.services import db
 from src.domain.blog import Blog
 from src.services.security import get_current_user
 
+# Create a router for handling Mediji related endpoints
 router = APIRouter()
 
 
@@ -72,10 +74,13 @@ async def post_one(blog: Blog, current_user: str = Depends(get_current_user)) ->
     # Add a new blog to the database
     blog_dict = blog.dict(by_alias=True)
     insert_result = db.proces.blog.insert_one(blog_dict)
+
+    # Check if the insertion was acknowledged and update the blog's ID
     if insert_result.acknowledged:
         blog_dict['_id'] = str(insert_result.inserted_id)
         return Blog(**blog_dict)
-    return None
+    else:
+        return None
 
 
 # Edit by ID

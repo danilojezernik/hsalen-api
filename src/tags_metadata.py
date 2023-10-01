@@ -26,13 +26,5 @@ tags_metadata = [
     {
         "name": "Mediji",
         "description": "uporablja se prefix /api/mediji"
-    },
-    {
-        "name": "Global error",
-        "description": "uporablja se prefix /api/global_error",
-        "externalDocs": {
-            "description": "Zunanja dokumentacija",
-            "url": "https://onthecode.co.uk/blog/global-error-handling-angular",
-        },
     }
 ]
