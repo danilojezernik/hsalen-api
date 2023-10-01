@@ -1,7 +1,9 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 
 from src.services import db
 from src.domain.blog import Blog
+
+from src.services.security import get_current_user
 
 router = APIRouter()
 
@@ -25,7 +27,7 @@ async def get_blog_id(_id: str):
 
 # ADD BLOG
 @router.post("/", operation_id="add_blog")
-async def post_one(blog: Blog) -> Blog | None:
+async def post_one(blog: Blog, current_user: str = Depends(get_current_user)) -> Blog | None:
     blog_dict = blog.dict(by_alias=True)
     insert_result = db.proces.blog.insert_one(blog_dict)
     if insert_result.acknowledged:
@@ -36,7 +38,7 @@ async def post_one(blog: Blog) -> Blog | None:
 
 # Edit by ID
 @router.put("/{_id}", operation_id="edit_blog")
-async def edit_blog(_id: str, blog: Blog) -> Blog | None:
+async def edit_blog(_id: str, blog: Blog, current_user: str = Depends(get_current_user)) -> Blog | None:
     blog = blog.dict(by_alias=True)
     del blog['_id']
 
@@ -51,7 +53,7 @@ async def edit_blog(_id: str, blog: Blog) -> Blog | None:
 
 # Delete by ID
 @router.delete("/{_id}", operation_id="delete_blog")
-async def delete_blog(_id: str):
+async def delete_blog(_id: str, current_user: str = Depends(get_current_user)):
     delete_result = db.proces.blog.delete_one({'_id': _id})
     if delete_result.deleted_count > 0:
         return {"message": "Blog deleted successfully"}
