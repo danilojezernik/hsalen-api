@@ -22,11 +22,33 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 # Function to verify the provided plain password against the hashed password
 def verify_password(plain_password, hashed_password):
+    """
+    This function verifies the provided plain password against the hashed password.
+
+    Parameters:
+    - plain_password: The plain password to verify.
+    - hashed_password: The hashed password to compare against.
+
+    Behavior:
+    - It uses the verify method from the passlib context to compare the plain password with the hashed password.
+    - Returns True if the plain password matches the hashed password, otherwise returns False.
+    """
     return pwd_context.verify(plain_password, hashed_password)
 
 
 # Function to get a user from the database based on the provided username
 def get_user(username: str):
+    """
+    This function retrieves a user from the database based on the provided username.
+
+    Parameters:
+    - username (str): Username of the user to retrieve.
+
+    Behavior:
+    - It queries the database to find a user with the given username using the find_one method.
+    - If a user is found, it constructs a UserInDB instance using the retrieved data and returns it.
+    - If no user is found, it returns None.
+    """
     user = db.proces.user.find_one({"username": username})
     if user:
         return UserInDB(**user)
@@ -34,30 +56,41 @@ def get_user(username: str):
 
 # Function to authenticate a user based on the provided username and password
 def authenticate_user(username: str, password: str):
+    """
+    This function authenticates a user by validating the provided username and password.
+
+    Parameters:
+    - username (str): Username of the user to authenticate.
+    - password (str): Password of the user to authenticate.
+
+    Behavior:
+    - It retrieves the user based on the provided username using the get_user function.
+    - If a user is found and the provided password matches the stored hashed password, the user is considered authenticated and returned.
+    - If no user is found or the password doesn't match, it returns None, indicating authentication failure.
+    """
     user = get_user(username)
     if user and verify_password(password, user.hashed_password):
         return user
     return None
 
 
-'''
-Function create_access_token is responsible for creating an access token (JWT) using the jwt.encode function from the jose library.
-
-Parameters:
-- data: A dictionary containing the data to be encoded into the token (e.g., user information).
-- expires_delta: An optional parameter indicating the expiration time for the token.
-
-Behavior:
-- Calculates the expiration time for the token based on the provided expires_delta or defaults to 15 minutes if no expiration is provided.
-- Updates the data dictionary with the expiration time.
-- Encodes the updated data into a JWT using the jwt.encode function with the provided SECRET_KEY and ALGORITHM.
-
-Returns:
-- The encoded JWT (access token) as the result of the function.
-'''
-
-
 def create_access_token(data: dict, expires_delta: timedelta | None = None):
+    """
+    This function is responsible for creating an access token (JWT) using the jwt.encode function from the jose library.
+
+    Parameters:
+    - data: A dictionary containing the data to be encoded into the token (e.g., user information).
+    - expires_delta: An optional parameter indicating the expiration time for the token.
+
+    Behavior:
+    - Calculates the expiration time for the token based on the provided expires_delta or defaults to 15 minutes if no expiration is provided.
+    - Updates the data dictionary with the expiration time.
+    - Encodes the updated data into a JWT using the jwt.encode function with the provided SECRET_KEY and ALGORITHM.
+
+    Returns:
+    - The encoded JWT (access token) as the result of the function.
+    """
+
     # Make a copy of the data to encode
     to_encode = data.copy()
 
@@ -79,19 +112,18 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     return encoded_jwt
 
 
-'''
-Function get_current_user asynchronously retrieves the current user based on the provided token.
-
-Steps:
-1. Creates an exception to handle authentication failures (credentials_exception).
-2. Decodes the token to extract the username (subject), handling potential exceptions.
-3. Attempts to retrieve the user from the database based on the extracted username.
-4. If the user is not found, raises an exception indicating authentication failure.
-   Otherwise, the user is returned.
-'''
-
-
 async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
+    """
+    Asynchronously retrieves the current user based on the provided token.
+
+    Steps:
+    1. Creates an exception to handle authentication failures (credentials_exception).
+    2. Decodes the token to extract the username (subject), handling potential exceptions.
+    3. Attempts to retrieve the user from the database based on the extracted username.
+    4. If the user is not found, raises an exception indicating authentication failure.
+       Otherwise, the user is returned.
+    """
+
     # Create an exception for handling authentication failures
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -124,16 +156,15 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     return user
 
 
-'''
-This asynchronous function get_current_active_user checks if the provided user is active.
-
-Behavior:
-- If the user is inactive (disabled), it raises an exception indicating an inactive user.
-- Otherwise, if the user is active, it simply returns the current user.
-'''
-
-
 async def get_current_active_user(current_user: Annotated[User, Depends(get_current_user)]):
+    """
+    This asynchronous function checks if the provided user is active.
+
+    Behavior:
+    - If the user is inactive (disabled), it raises an exception indicating an inactive user.
+    - Otherwise, if the user is active, it simply returns the current user.
+    """
+
     # Check if the user is inactive
     if current_user.disabled:
         # Raise an exception if the user is inactive
