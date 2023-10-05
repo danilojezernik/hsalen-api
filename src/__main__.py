@@ -16,7 +16,6 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src import env
-from src.services import db
 from src.routes import mediji, admin, login, blog
 from src.tags_metadata import tags_metadata
 
@@ -42,8 +41,8 @@ app.include_router(mediji.router, prefix="/mediji", tags=['Mediji'])
 
 if __name__ == '__main__':
     # Drop the database and seed it
-    db.drop()
-    db.seed()
+    # db.drop()
+    # db.seed()
 
     # Run the FastAPI application using Uvicorn server
     uvicorn.run(app, host="0.0.0.0", port=8000)

@@ -57,8 +57,49 @@ async def get_blog_id(_id: str):
         return Blog(**cursor)
 
 
-@router.post("/", operation_id="add_blog")
-async def post_one(blog: Blog, current_user: str = Depends(get_current_user)) -> Blog | None:
+# ADMIN
+
+# Get all BLOG for ADMIN
+@router.get("/admin/", operation_id="get_all_blogs_admin")
+async def get_all_admin(current_user: str = Depends(get_current_user)) -> list[Blog]:
+    """
+    This route handles the retrieval of all blogs from the database.
+
+    Behavior:
+    - Retrieves all blogs from the database.
+    - Returns a list of Blog objects.
+    """
+
+    # Retrieve all blogs from the database
+    cursor = db.proces.blog.find()
+    return [Blog(**document) for document in cursor]
+
+
+# Get by ID for Admin
+@router.get("/admin/{_id}", operation_id="get_blog_by_id_admin")
+async def get_blog_id_admin(_id: str, current_user: str = Depends(get_current_user)):
+    """
+    This route handles the retrieval of a blog by its ID from the database.
+
+    Parameters:
+    - _id (str): ID of the blog to retrieve.
+
+    Behavior:
+    - Retrieves a blog by its ID from the database.
+    - Returns the Blog object if found, or raises an exception if not found.
+    """
+
+    # Retrieve a blog by its ID from the database
+    cursor = db.proces.blog.find_one({'_id': _id})
+    if cursor is None:
+        raise HTTPException(status_code=400, detail=f"Blog by ID:{_id} does not exist")
+    else:
+        return Blog(**cursor)
+
+
+# Add blog for Admin
+@router.post("/admin", operation_id="add_blog_admin")
+async def post_one_admin(blog: Blog, current_user: str = Depends(get_current_user)) -> Blog | None:
     """
     This route adds a new blog to the database.
 
@@ -84,8 +125,8 @@ async def post_one(blog: Blog, current_user: str = Depends(get_current_user)) ->
 
 
 # Edit by ID
-@router.put("/{_id}", operation_id="edit_blog")
-async def edit_blog(_id: str, blog: Blog, current_user: str = Depends(get_current_user)) -> Blog | None:
+@router.put("/admin/{_id}", operation_id="edit_blog_admin")
+async def edit_blog_admin(_id: str, blog: Blog, current_user: str = Depends(get_current_user)) -> Blog | None:
     """
     This route edits an existing blog by its ID in the database.
 
@@ -121,8 +162,8 @@ async def edit_blog(_id: str, blog: Blog, current_user: str = Depends(get_curren
 
 
 # Delete a blog by its ID from the database
-@router.delete("/{_id}", operation_id="delete_blog")
-async def delete_blog(_id: str, current_user: str = Depends(get_current_user)):
+@router.delete("/admin/{_id}", operation_id="delete_blog_admin")
+async def delete_blog_admin(_id: str, current_user: str = Depends(get_current_user)):
     """
     Route to delete a blog by its ID from the database.
 

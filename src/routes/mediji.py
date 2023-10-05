@@ -10,9 +10,10 @@ Routes:
 """
 
 # Import necessary modules and classes
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Depends
 from src.services import db
 from src.domain.mediji import Mediji
+from src.services.security import get_current_user
 
 # Create a router for handling Mediji related endpoints
 router = APIRouter()
@@ -57,11 +58,52 @@ async def get_mediji_id(_id: str):
         return Mediji(**cursor)
 
 
-# ADD MEDIJI
-@router.post("/", operation_id="add_mediji")
-async def post_one(mediji: Mediji) -> Mediji | None:
+# ADMIN
+
+# GET ALL MEDIJI
+@router.get('/admin', operation_id="get_all_mediji_admin")
+def get_mediji_admin(current_user: str = Depends(get_current_user)) -> list[Mediji]:
     """
-    Route to add a new Mediji to the database.
+    Route to get all Mediji from the database for admin.
+
+    Returns:
+        list[Mediji]: List of all Mediji in the database.
+    """
+
+    # Retrieve all mediji from the database
+    cursor = db.proces.mediji.find()
+    return [Mediji(**document) for document in cursor]
+
+
+# GET MEDIJI BY ID
+@router.get("/admin/{_id}", operation_id="get_mediji_by_id_admin")
+async def get_mediji_id_admin(_id: str, current_user: str = Depends(get_current_user)):
+    """
+    Route to get a Mediji by its ID from the database for admin.
+
+    Arguments:
+        _id (str): The ID of the Mediji to retrieve.
+
+    Returns:
+        Mediji: The Mediji with the specified ID.
+
+    Raises:
+        HTTPException: If the Mediji with the specified ID is not found.
+    """
+
+    # Retrieve a mediji by its ID from the database
+    cursor = db.proces.mediji.find_one({'_id': _id})
+    if cursor is None:
+        raise HTTPException(status_code=404, detail=f"Mediji by ID:{_id} does not exist")
+    else:
+        return Mediji(**cursor)
+
+
+# ADD MEDIJI FOR ADMIN
+@router.post("/admin", operation_id="add_mediji_admin")
+async def post_one_admin(mediji: Mediji, current_user: str = Depends(get_current_user)) -> Mediji | None:
+    """
+    Route to add a new Mediji to the database for admin.
 
     Arguments:
         mediji (Mediji): The Mediji object to be added.
@@ -90,11 +132,11 @@ async def post_one(mediji: Mediji) -> Mediji | None:
     return None
 
 
-# EDIT MEDIJI
-@router.put("/{_id}", operation_id="edit_mediji")
-async def edit_mediji(_id: str, mediji: Mediji) -> Mediji | None:
+# EDIT MEDIJI FOR ADMIN
+@router.put("/admin/{_id}", operation_id="edit_mediji_admin")
+async def edit_mediji_admin(_id: str, mediji: Mediji, current_user: str = Depends(get_current_user)) -> Mediji | None:
     """
-    Route to edit an existing Mediji by its ID in the database.
+    Route to edit an existing Mediji by its ID in the database for admin.
 
     Arguments:
         _id (str): The ID of the Mediji to edit.
@@ -128,11 +170,11 @@ async def edit_mediji(_id: str, mediji: Mediji) -> Mediji | None:
     return None
 
 
-# DELETE MEDIJI
-@router.delete("/{_id}", operation_id="delete_mediji")
-async def delete_mediji(_id: str):
+# DELETE MEDIJI FOR ADMIN
+@router.delete("/admin/{_id}", operation_id="delete_mediji_admin")
+async def delete_mediji_admin(_id: str, current_user: str = Depends(get_current_user)):
     """
-    Route to delete a Mediji by its ID from the database.
+    Route to delete a Mediji by its ID from the database for admin.
 
     Arguments:
         _id (str): The ID of the Mediji to delete.
@@ -154,4 +196,3 @@ async def delete_mediji(_id: str):
     else:
         # Raise an HTTPException if Mediji was not found
         raise HTTPException(status_code=404, detail=f"Mediji by ID:({_id}) not found")
-
