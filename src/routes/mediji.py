@@ -34,34 +34,10 @@ def get_mediji() -> list[Mediji]:
     return [Mediji(**document) for document in cursor]
 
 
-# GET MEDIJI BY ID
-@router.get("/{_id}", operation_id="get_mediji_by_id")
-async def get_mediji_id(_id: str):
-    """
-    Route to get a Mediji by its ID from the database.
-
-    Arguments:
-        _id (str): The ID of the Mediji to retrieve.
-
-    Returns:
-        Mediji: The Mediji with the specified ID.
-
-    Raises:
-        HTTPException: If the Mediji with the specified ID is not found.
-    """
-
-    # Retrieve a mediji by its ID from the database
-    cursor = db.proces.mediji.find_one({'_id': _id})
-    if cursor is None:
-        raise HTTPException(status_code=404, detail=f"Mediji by ID:{_id} does not exist")
-    else:
-        return Mediji(**cursor)
-
-
 # ADMIN
 
-# GET ALL MEDIJI
-@router.get('/admin', operation_id="get_all_mediji_admin")
+# GET ALL MEDIJI FOR ADMIN
+@router.get('/admin/', operation_id="get_all_mediji_admin")
 def get_mediji_admin(current_user: str = Depends(get_current_user)) -> list[Mediji]:
     """
     Route to get all Mediji from the database for admin.

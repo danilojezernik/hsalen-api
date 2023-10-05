@@ -5,10 +5,10 @@ from bson import ObjectId
 from pydantic import BaseModel, Field
 
 
-class Mediji(BaseModel):
+class Email(BaseModel):
     id: Optional[str] = Field(alias='_id', default_factory=lambda: str(ObjectId()))
-    naslov_mediji: str
-    opis_mediji: str
-    povezava_slika: str
-    povezava_mediji: str
+    name: str
+    surname: str
+    email: str
+    content: str
     datum_vnosa: datetime.datetime = Field(default_factory=datetime.datetime.now)

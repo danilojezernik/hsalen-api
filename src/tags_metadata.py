@@ -26,5 +26,9 @@ tags_metadata = [
     {
         "name": "Mediji",
         "description": "uporablja se prefix /api/mediji"
+    },
+    {
+        "name": "Email",
+        "description": "uporablja se prefix /api/email"
     }
 ]
