@@ -37,23 +37,29 @@ def get_all_emails(current_user: str = Depends(get_current_user)):
     return [Email(**document) for document in cursor]
 
 
-# GET EMAIL BY ID
-@router.get("/{_id}", operation_id="get_email_by_id_admin")
-async def get_email_by_id_admin(_id: str, current_user: str = Depends(get_current_user)):
+# ADMIN DELETE EMAIL
+@router.delete("/{_id}", operation_id="delete_email_admin")
+async def delete_email_admin(_id: str, current_user: str = Depends(get_current_user)):
     """
-    This route handles the retrieval of an email by its ID from the database.
+    Route to delete an email by its ID from the database.
 
-    Parameters:
-    - _id (str): ID of the email to retrieve.
+    Arguments:
+        _id (str): The ID of an email to be deleted.
+        current_user (str): The current authenticated user.
 
-    Behavior:
-    - Retrieves an email by its ID from the database.
-    - Returns the Email object if found, or raises an exception if not found.
+    Returns:
+        dict: A message indicating the status of the deletion.
+
+    Raises:
+        HTTPException: If email is not found for deletion.
     """
 
-    # Retrieve a blog by its ID from the database
-    cursor = db.proces.email.find_one({'_id': _id})
-    if cursor is None:
-        raise HTTPException(status_code=400, detail=f"Email by ID:{_id} does not exist")
+    # Attempt to delete email from the database
+    delete_result = db.proces.blog.delete_one({'_id': _id})
+
+    # Check if email was successfully deleted
+    if delete_result.delete_count > 0:
+        return {"message": "Email deleted successfully"}
     else:
-        return Email(**cursor)
+        # Raise an exception if email was not found for deletion
+        raise HTTPException(status_code=404, detail=f"Email by ID: ({_id}) not found")
