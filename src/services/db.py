@@ -5,6 +5,7 @@ from src.database.email import email
 from src.database.blog import blog
 from src.database.mediji import mediji
 from src.database.user import user
+from src.database.event import event
 
 client = MongoClient(env.DB_CONNECTION)
 proces = client[env.DB_PROCES]
@@ -15,6 +16,7 @@ def drop():
     proces.blog.drop()
     proces.mediji.drop()
     proces.email.drop()
+    proces.event.drop()
     pass
 
 
@@ -23,4 +25,5 @@ def seed():
     proces.blog.insert_many(blog)
     proces.mediji.insert_many(mediji)
     proces.email.insert_many(email)
+    proces.event.insert_many(event)
     pass

@@ -28,6 +28,10 @@ tags_metadata = [
         "description": "uporablja se prefix /api/mediji"
     },
     {
+        "name": "Events",
+        "description": "uporablja se prefix /api/events"
+    },
+    {
         "name": "Email",
         "description": "uporablja se prefix /api/email"
     }

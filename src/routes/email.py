@@ -32,7 +32,7 @@ async def user_send_email(emailing: Email):
 
 # ADMIN GETTING EMAILS
 @router.get("/", operation_id="get_all_emails_admin")
-def get_all_emails(current_user: str = Depends(get_current_user)):
+def get_all_emails(current_user: str = Depends(get_current_user)) -> list[Email]:
     cursor = db.proces.email.find()
     return [Email(**document) for document in cursor]
 
@@ -55,10 +55,10 @@ async def delete_email_admin(_id: str, current_user: str = Depends(get_current_u
     """
 
     # Attempt to delete email from the database
-    delete_result = db.proces.blog.delete_one({'_id': _id})
+    delete_result = db.proces.email.delete_one({'_id': _id})
 
     # Check if email was successfully deleted
-    if delete_result.delete_count > 0:
+    if delete_result.deleted_count > 0:
         return {"message": "Email deleted successfully"}
     else:
         # Raise an exception if email was not found for deletion
