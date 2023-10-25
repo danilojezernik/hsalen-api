@@ -4,7 +4,7 @@ import smtplib
 from src import env
 
 
-def send_email(email_from: str, subject: str, body: str) -> bool:
+def send(email_from: str, subject: str, body: str) -> bool:
     """
     Send an email to a specified recipient.
 
@@ -27,8 +27,8 @@ def send_email(email_from: str, subject: str, body: str) -> bool:
     """
     # Create an EmailMessage object
     em = EmailMessage()
-    em['From'] = env.EMAIL_ME
-    em['To'] = email_from
+    em['From'] = email_from
+    em['To'] = env.EMAIL_ME
     em['Subject'] = subject
     em.set_content(body, subtype='html')
 
@@ -38,7 +38,7 @@ def send_email(email_from: str, subject: str, body: str) -> bool:
         smtp.login(env.EMAIL_ME, env.EMAIL_PASSWORD)
 
         # Send the email from 'env.EMAIL_ME' to 'email_from'
-        sendemail = smtp.sendmail(env.EMAIL_ME, email_from, em.as_string())
+        sendemail = smtp.sendmail(env.EMAIL_ME, env.EMAIL_ME, em.as_string())
 
         if not sendemail:
             return True  # Email sent successfully

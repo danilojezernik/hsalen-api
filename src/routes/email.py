@@ -29,7 +29,7 @@ async def user_send_email(emailing: Email):
     body = email.html(name=emailing.name, surname=emailing.surname, email=emailing.email, content=emailing.content)
 
     # Send the email
-    if not emails.send_email(email_from=emailing.email, subject='Hypnosis Studio Alen | Dobil si sporočilo ♥', body=body):
+    if not emails.send(email_from=emailing.email, subject='Hypnosis Studio Alen | Dobil si sporočilo ♥', body=body):
         return HTTPException(status_code=500, detail="Email not sent")
 
     # Store email data in the database
