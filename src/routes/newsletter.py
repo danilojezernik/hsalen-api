@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException
 
-from src.services import emails, db
+from src.services import newsletter, db
 
 router = APIRouter()
 
@@ -33,7 +33,7 @@ async def get_emails_only() -> list[str]:
 async def send_emails_to_all():
 
     # Send the emails to all
-    if not emails.newsletter(subject='Hypnosis Studio Alen | E-novice ♥', body='TESTING'):
+    if not newsletter.newsletter(subject='Hypnosis Studio Alen | E-novice ♥', body='TESTIRAM - SI DOBIL?'):
         return HTTPException(status_code=500, detail="Email not sent")
 
     return {"message": "Newsletter was sent"}
