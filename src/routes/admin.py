@@ -1,4 +1,4 @@
-from fastapi import APIRouter,Depends
+from fastapi import APIRouter, Depends
 from src.services.security import get_current_user
 
 router = APIRouter()

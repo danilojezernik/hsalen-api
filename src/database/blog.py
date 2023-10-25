@@ -5,7 +5,7 @@ from src.domain.blog import Blog
 blog = [
         Blog(
             naslov='Usoda duše',
-            tag='jasnovidnost',
+            kategorija='jasnovidnost',
             podnaslov='',
             datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Ali lahko spremenim svojo usodo? Odgovor je DA. Kako? Ali ni vse že v naprej določeno? Seveda '
@@ -36,7 +36,7 @@ blog = [
         ).dict(by_alias=True),
         Blog(
             naslov='Regresija v prejšnja življenja',
-            tag='medijstvo',
+                kategorija='medijstvo',
             podnaslov='',
             datum_vnosa=datetime.datetime.now(),
             vsebina='<p>V življenju se srečamo z mnogo izkušnjami in lekcijami za katere ne najdemo vzroka-pravega '
@@ -67,7 +67,7 @@ blog = [
         ).dict(by_alias=True),
         Blog(
             naslov='Intuicija',
-            tag='hipnoterapija',
+                kategorija='hipnoterapija',
             podnaslov='',
             datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Preprosto zaupaj svojim notranjim občutkom, ne dvomi v te občutke, ne dvomi vase, ne dovoli, '
@@ -83,7 +83,7 @@ blog = [
         ).dict(by_alias=True),
         Blog(
             naslov='Drevo življenja',
-            tag='regresija',
+                kategorija='regresija',
             podnaslov='Kar daješ, to dobiš',
             datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Misel je energija, večkrat razmišljamo o isti zadevi, začnemo o misli govorit v besedah, '
@@ -95,7 +95,7 @@ blog = [
         ).dict(by_alias=True),
         Blog(
             naslov='Hujšanje s pomočjo hipnoze',
-            tag='hipnoterapija',
+                kategorija='hipnoterapija',
             podnaslov='',
             datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Se želite znebiti odvečnih kilogramov? Ste poizkusili mnogo različnih diet?</p><p>Vedno kadar '
@@ -109,7 +109,7 @@ blog = [
         ).dict(by_alias=True),
         Blog(
             naslov='Odvajanje od kajenja s pomočjo hipnoze',
-            tag='hipnoterapija',
+                kategorija='hipnoterapija',
             podnaslov='',
             datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Mnogo ljudi me vpraša ali lahko preneham kadit s pomočjo hipnoze. Seveda lahko, s pomočjo '
@@ -134,7 +134,7 @@ blog = [
         ).dict(by_alias=True),
         Blog(
             naslov='Ljubezen',
-            tag='regresija',
+                kategorija='regresija',
             podnaslov='Največja in najmočnejša sila v vesolju',
             datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Obstaja veliko različnih sil – energij v vesolju, na Zemlji materialnih stvari, '
@@ -152,7 +152,7 @@ blog = [
         ).dict(by_alias=True),
         Blog(
             naslov='Certifikat za hipnoterapevta',
-            tag='hipnoterapija',
+                kategorija='hipnoterapija',
             podnaslov='',
             datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Leta 2016 sem uspešno opravil intenzivni mednarodni tečaj za hipnoterapevta na Omni Hypnosis '
@@ -166,7 +166,7 @@ blog = [
         ).dict(by_alias=True),
         Blog(
             naslov='Hipnoza in hipnoterapija',
-            tag='hipnoterapija',
+                kategorija='hipnoterapija',
             podnaslov='Mogočno orodje za izboljšanje kvalitete življenja',
             datum_vnosa=datetime.datetime.now(),
             vsebina='<p>Ali je hipnoza nekaj hudega, nekaj resnega, mističnega, nevarnega? Šla bi na hipnozo vendar '

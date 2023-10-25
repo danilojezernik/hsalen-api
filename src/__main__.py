@@ -16,7 +16,7 @@ import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src import env
-from src.routes import mediji, admin, login, blog, email, events
+from src.routes import mediji, admin, login, blog, email, events, newsletter
 from src.services import db
 from src.tags_metadata import tags_metadata
 
@@ -41,6 +41,7 @@ app.include_router(admin.router, prefix="/admin", tags=['Admin'])
 app.include_router(mediji.router, prefix="/mediji", tags=['Mediji'])
 app.include_router(events.router, prefix="/events", tags=['Events'])
 app.include_router(email.router, prefix="/email", tags=['Email'])
+app.include_router(newsletter.router, prefix="/newsletter", tags=['Newsletter'])
 
 
 if __name__ == '__main__':
