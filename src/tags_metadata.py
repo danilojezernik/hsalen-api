@@ -32,11 +32,11 @@ tags_metadata = [
         "description": "uporablja se prefix /api/events"
     },
     {
-        "name": "Email",
+        "name": "Contact",
         "description": "uporablja se prefix /api/email"
     },
     {
-        "name": "Newsletter",
-        "description": "uporablja se prefix /api/newsletter"
+        "name": "Subscriber",
+        "description": "uporablja se prefix /api/subscriber"
     }
 ]

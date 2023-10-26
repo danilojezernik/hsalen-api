@@ -16,4 +16,3 @@ EMAIL_ME = os.getenv('EMAIL_ME')
 # TESTING
 EMAIL_1 = os.getenv('EMAIL_1')
 EMAIL_2 = os.getenv('EMAIL_2')
-EMAIL_3 = os.getenv('EMAIL_3')

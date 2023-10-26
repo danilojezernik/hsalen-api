@@ -24,7 +24,7 @@ def newsletter(subject: str, body: str) -> bool:
         - Python's smtplib module for sending emails
     """
     # Retrieve email addresses of subscribers from the database
-    cursor = db.proces.newsletter.find({}, {'email': 1})
+    cursor = db.proces.subscriber.find({}, {'email': 1})
     email_addresses = [document['email'] for document in cursor]
 
     # Establish an SSL connection to Gmail's SMTP server

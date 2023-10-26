@@ -12,5 +12,6 @@ class Events(BaseModel):
     location: str
     show_notification: bool
     start_date: str
+    start_time: str
     event_length: str
     datum_vnosa: datetime.datetime = Field(default_factory=datetime.datetime.now)

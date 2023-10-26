@@ -5,7 +5,6 @@ from src.services import emails, db
 from src.template import email
 from src.services.security import get_current_user
 
-
 router = APIRouter()
 
 
@@ -29,7 +28,7 @@ async def user_send_email(emailing: Email):
     body = email.html(name=emailing.name, surname=emailing.surname, email=emailing.email, content=emailing.content)
 
     # Send the email
-    if not emails.send(email_from=emailing.email, subject='Hypnosis Studio Alen | Dobil si sporočilo ♥', body=body):
+    if not emails.send(email_from=emailing.email, subject=f'Hypnosis Studio Alen | {emailing.name} ti je poslal/a sporočilo ♥', body=body):
         return HTTPException(status_code=500, detail="Email not sent")
 
     # Store email data in the database
