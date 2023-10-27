@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException, Depends
 
 from src.domain.subscriber import Subscriber
-from src.services import newsletter, db
+from src.services import db
 from src.services.security import get_current_user
 
 router = APIRouter()
@@ -86,7 +86,7 @@ async def edit_subscriber(_id: str, subscriber: Subscriber, current_user: str = 
     return None
 
 
-# Delete a blog by its ID from the database
+# DELETE SUBSCRIBER BY ID
 @router.delete("/{_id}", operation_id="delete_subscriber")
 async def delete_subscriber(_id: str, current_user: str = Depends(get_current_user)):
     """
@@ -135,13 +135,3 @@ async def get_emails_only(current_user: str = Depends(get_current_user)) -> list
     email_addresses = [document['email'] for document in cursor]
 
     return email_addresses  # Return a list of email addresses
-
-
-# SEND NEWSLETTER TO ALL
-@router.post("/send-newsletter", operation_id="send_newsletter_to_all")
-async def send_newsletter_to_all(current_user: str = Depends(get_current_user)):
-    # Send the newsletter to all
-    if not newsletter.newsletter(subject='Hypnosis Studio Alen | E-novice ♥', body='TESTIRAM - SI DOBIL?'):
-        return HTTPException(status_code=500, detail="Email not sent")
-
-    return {"message": "Newsletter was sent"}

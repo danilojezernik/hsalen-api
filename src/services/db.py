@@ -1,6 +1,7 @@
 from pymongo import MongoClient
 
 from src import env
+from src.database.newsletter import newsletter
 from src.database.email import email
 from src.database.blog import blog
 from src.database.mediji import mediji
@@ -19,6 +20,7 @@ def drop():
     proces.email.drop()
     proces.event.drop()
     proces.subscriber.drop()
+    proces.newsletter.drop()
     pass
 
 
@@ -29,4 +31,5 @@ def seed():
     proces.email.insert_many(email)
     proces.event.insert_many(event)
     proces.subscriber.insert_many(subscriber)
+    proces.newsletter.insert_many(newsletter)
     pass

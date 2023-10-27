@@ -38,5 +38,9 @@ tags_metadata = [
     {
         "name": "Subscriber",
         "description": "uporablja se prefix /api/subscriber"
+    },
+    {
+        "name": "Newsletter",
+        "description": "uporablja se prefix /api/newsletter"
     }
 ]
