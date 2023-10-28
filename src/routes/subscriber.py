@@ -112,26 +112,3 @@ async def delete_subscriber(_id: str, current_user: str = Depends(get_current_us
     else:
         # Raise an exception if the blog was not found for deletion
         raise HTTPException(status_code=404, detail=f"Subscriber by ID:({_id}) not found")
-
-
-# TODO: remove later when functionality is implemented for other routes
-# GET ONLY EMAILS FROM THE DATABASE
-@router.get("/", operation_id="get_emails_of_subscribers")
-async def get_emails_only(current_user: str = Depends(get_current_user)) -> list[str]:
-    """
-    Route for retrieving a list of email addresses from the database.
-
-    Returns:
-        list[str]: A list of email addresses.
-
-    Note:
-        This route does not send emails but is used to fetch email addresses from the database.
-    """
-
-    # Retrieve email addresses from the database
-    cursor = db.proces.subscriber.find({}, {'email': 1})
-
-    # Extract just the 'email' field from the cursor
-    email_addresses = [document['email'] for document in cursor]
-
-    return email_addresses  # Return a list of email addresses
