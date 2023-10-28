@@ -22,9 +22,31 @@ async def get_all_subscribers(current_user: str = Depends(get_current_user)) -> 
     return [Subscriber(**document) for document in cursor]
 
 
+# GET SUBSCRIBER BY ID
+@router.get("/{_id}", operation_id="get_subscriber_by_id")
+async def get_subscriber_id(_id: str):
+    """
+    This route handles the retrieval of a subscriber by its ID from the database.
+
+    Parameters:
+    - _id (str): ID of the subscriber to retrieve.
+
+    Behavior:
+    - Retrieves a subscriber by its ID from the database.
+    - Returns the Subscriber object if found, or raises an exception if not found.
+    """
+
+    # Retrieve a blog by its ID from the database
+    cursor = db.proces.subscriber.find_one({'_id': _id})
+    if cursor is None:
+        raise HTTPException(status_code=400, detail=f"Subscriber by ID:{_id} does not exist")
+    else:
+        return Subscriber(**cursor)
+
+
 # ADD SUBSCRIBER
-@router.post("/", operation_id="add_SUBSCRIBER")
-async def post_one_admin(subscriber: Subscriber, current_user: str = Depends(get_current_user)) -> Subscriber | None:
+@router.post("/", operation_id="add_subscriber")
+async def post_subscriber(subscriber: Subscriber, current_user: str = Depends(get_current_user)) -> Subscriber | None:
     """
     This route adds a new subscriber to the database.
 
