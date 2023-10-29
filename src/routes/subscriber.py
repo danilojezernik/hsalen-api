@@ -27,7 +27,7 @@ async def get_all_subscribers(current_user: str = Depends(get_current_user)) -> 
 
 # GET SUBSCRIBER BY ID
 @router.get("/{_id}", operation_id="get_subscriber_by_id")
-async def get_subscriber_id(_id: str):
+async def get_subscriber_id(_id: str, current_user: str = Depends(get_current_user)):
     """
     This route handles the retrieval of a subscriber by its ID from the database.
 
@@ -139,7 +139,7 @@ async def delete_subscriber(_id: str, current_user: str = Depends(get_current_us
         raise HTTPException(status_code=404, detail=f"Subscriber by ID:({_id}) not found")
 
 
-# CLKIENT SUBSCRIPTION TO NEWSLETTER
+# CLIENT SUBSCRIPTION TO NEWSLETTER
 @router.post("/subscribe")
 async def subscribe(subscriber: Subscriber):
     """
