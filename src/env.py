@@ -12,6 +12,7 @@ GESLO = os.getenv('GESLO')
 ALGORITHM = os.getenv('ALGORITHM')
 EMAIL_PASSWORD = os.getenv('EMAIL_PASSWORD')
 EMAIL_ME = os.getenv('EMAIL_ME')
+DOMAIN = os.getenv('DOMAIN')
 
 # TESTING
 EMAIL_1 = os.getenv('EMAIL_1')

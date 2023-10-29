@@ -112,6 +112,19 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     return encoded_jwt
 
 
+async def get_payload(token: Annotated[str, Depends(oauth2_scheme)]):
+    credentials_exception = HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Could not validate credentials",
+        headers={"WWW-Authenticate": "Bearer"},
+    )
+    try:
+        payload = jwt.decode(token, env.SECRET_KEY, algorithms=["HS256"])
+    except JWTError:
+        raise credentials_exception
+    return payload
+
+
 async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     """
     Asynchronously retrieves the current user based on the provided token.
@@ -172,3 +185,7 @@ async def get_current_active_user(current_user: Annotated[User, Depends(get_curr
 
     # Return the current user if active
     return current_user
+
+
+def make_hash(password):
+    return pwd_context.hash(password)

@@ -1,8 +1,11 @@
+from datetime import timedelta
 from fastapi import APIRouter, HTTPException, Depends
 
+from src import env
 from src.domain.subscriber import Subscriber
-from src.services import db
+from src.services import db, security, email_confirm
 from src.services.security import get_current_user
+from src.template import confirmation_email
 
 router = APIRouter()
 
@@ -134,3 +137,60 @@ async def delete_subscriber(_id: str, current_user: str = Depends(get_current_us
     else:
         # Raise an exception if the blog was not found for deletion
         raise HTTPException(status_code=404, detail=f"Subscriber by ID:({_id}) not found")
+
+
+# CLKIENT SUBSCRIPTION TO NEWSLETTER
+@router.post("/subscribe")
+async def subscribe(subscriber: Subscriber):
+    """
+    Route for subscribing a client to the newsletter and sending a confirmation email.
+
+    Parameters:
+    - subscriber (Subscriber): Subscriber object containing client information.
+
+    Behavior:
+    - Creates an access token for the client with a short expiration time.
+    - Sends a confirmation email to the client with a confirmation link.
+    - Inserts the subscriber's data into the database.
+    - Returns a success message if everything is successful.
+    - If any step fails, returns an appropriate error response.
+    """
+
+    # Create an access token with a short expiration time
+    token = security.create_access_token(data={'user_id': subscriber.id}, expires_delta=timedelta(minutes=10))
+
+    # Generate the confirmation email's HTML content
+    body = confirmation_email.html(link=f'{env.DOMAIN}/subscribers/confirm/{token}', name=subscriber.name, surname=subscriber.surname)
+
+    # Send the confirmation email to the subscriber
+    if not email_confirm.send_confirm(email_to=subscriber.email, subject='Hypnosis Studio Alen | Potrdite svojo registracijo na E-novičke ♥', body=body):
+        return HTTPException(status_code=500, detail="Email not sent")
+
+    # Insert the subscriber's data into the database
+    db.proces.subscriber.insert_one(subscriber.dict(by_alias=True))
+
+    return {"message": "Message was sent"}
+
+
+# CLIENT CONFIRMING EMAIL FOR NEWSLETTER
+@router.get("/confirm/{token}")
+async def confirm(token: str):
+    """
+    Route for clients to confirm their subscription by clicking on the confirmation link.
+
+    Parameters:
+    - token (str): The confirmation token.
+
+    Behavior:
+    - Extracts the user_id from the token.
+    - Marks the subscriber as confirmed in the database.
+    - Returns the payload from the token, which can be useful for additional actions.
+    """
+
+    # Extract the user_id from the confirmation token
+    payload = await security.get_payload(token=token)
+
+    # Mark the subscriber as confirmed in the database
+    db.proces.subscriber.update_one({"_id": payload['user_id']}, {"$set": {"confirmed": True}})
+
+    return payload
