@@ -39,14 +39,14 @@ async def get_all() -> list[Blog]:
 @router.get("/limited", operation_id="get_limited_blogs")
 async def get_limited_blogs() -> list[Blog]:
     """
-    This route handles the retrieval of all blogs from the database.
+    This route handles the retrieval of limited amount of blogs from the database.
 
     Behavior:
-    - Retrieves all blogs from the database.
-    - Returns a list of Blog objects.
+    - Retrieves limited amount of blogs from the database.
+    - Returns a limited list of Blog objects.
     """
 
-    # Retrieve all blogs from the database
+    # Retrieve limited amount of blogs from the database
     cursor = db.proces.blog.find().limit(4)
     return [Blog(**document) for document in cursor]
 
