@@ -1,5 +1,6 @@
 from datetime import timedelta
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Request, status
+from fastapi.responses import RedirectResponse
 
 from src import env
 from src.domain.subscriber import Subscriber
@@ -174,7 +175,7 @@ async def subscribe(subscriber: Subscriber):
 
 # CLIENT CONFIRMING EMAIL FOR NEWSLETTER
 @router.get("/confirm/{token}")
-async def confirm(token: str):
+async def confirm(request: Request, token: str):
     """
     Route for clients to confirm their subscription by clicking on the confirmation link.
 
@@ -193,4 +194,4 @@ async def confirm(token: str):
     # Mark the subscriber as confirmed in the database
     db.proces.subscriber.update_one({"_id": payload['user_id']}, {"$set": {"confirmed": True}})
 
-    return payload
+    return RedirectResponse(url='http://localhost:4200/success', status_code=status.HTTP_303_SEE_OTHER)
