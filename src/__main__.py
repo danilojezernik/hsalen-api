@@ -51,4 +51,4 @@ if __name__ == '__main__':
     db.seed()
 
     # Run the FastAPI application using Uvicorn server
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="0.0.0.0", port=env.PORT, timeout_keep_alive=60)
