@@ -15,6 +15,7 @@ from src.services import db
 from src.domain.blog import Blog
 from src.services.security import get_current_user
 
+
 # Create a router for handling Mediji related endpoints
 router = APIRouter()
 
