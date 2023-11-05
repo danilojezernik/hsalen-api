@@ -19,7 +19,7 @@ from src import env
 from src.routes import mediji, admin, login, blog, email, events, subscriber, newsletter
 from src.tags_metadata import tags_metadata
 
-app = FastAPI(prefix="/api", openapi_tags=tags_metadata)
+app = FastAPI(openapi_tags=tags_metadata)
 
 # Configure CORS settings
 app.add_middleware(
@@ -50,4 +50,4 @@ if __name__ == '__main__':
     # db.seed()
 
     # Run the FastAPI application using Uvicorn server
-    uvicorn.run(app, host="0.0.0.0", port=env.PORT, timeout_keep_alive=60)
+    uvicorn.run(app, host="0.0.0.0", port=env.PORT)
