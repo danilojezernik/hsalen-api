@@ -15,7 +15,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from src import env
 from src.routes import mediji, admin, login, blog, email, events, subscriber, newsletter
-from src.services import db
+# from src.services import db
 from src.tags_metadata import tags_metadata
 
 app = FastAPI(openapi_tags=tags_metadata)
@@ -45,8 +45,8 @@ app.include_router(newsletter.router, prefix="/newsletter", tags=['Newsletter'])
 
 if __name__ == '__main__':
     # Drop the database and seed it
-    db.drop()
-    db.seed()
+    # db.drop()
+    # db.seed()
 
     # Run the FastAPI application using Uvicorn server
     uvicorn.run(app, host="0.0.0.0", port=env.PORT)
