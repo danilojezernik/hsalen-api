@@ -9,7 +9,6 @@ class Mediji(BaseModel):
     id: Optional[str] = Field(alias='_id', default_factory=lambda: str(ObjectId()))
     naslov_mediji: str
     opis_mediji: str
-    kraj_mediji: str
     datum_mediji: str
     povezava_slika: str
     povezava_mediji: str
