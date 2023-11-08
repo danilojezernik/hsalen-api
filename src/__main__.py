@@ -8,8 +8,6 @@ Steps:
 4. Sets the secret key for the FastAPI application.
 5. Includes various routers for different functionalities (blog, login, admin, mediji).
 6. If the script is run directly (not imported), it drops the database and seeds it, then starts the Uvicorn server.
-
-Note: The FastAPI application is prefixed with '/api'.
 """
 
 import uvicorn
