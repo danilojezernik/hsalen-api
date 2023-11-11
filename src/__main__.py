@@ -13,8 +13,9 @@ Steps:
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
 from src import env
-from src.routes import mediji, admin, login, blog, email, events, subscriber, newsletter
+from src.routes import mediji, admin, login, blog, email, events, subscriber, newsletter, photo
 # from src.services import db
 from src.tags_metadata import tags_metadata
 
@@ -41,6 +42,7 @@ app.include_router(events.router, prefix="/events", tags=['Events'])
 app.include_router(email.router, prefix="/email", tags=['Contact'])
 app.include_router(subscriber.router, prefix="/subscribers", tags=['Subscriber'])
 app.include_router(newsletter.router, prefix="/newsletter", tags=['Newsletter'])
+app.include_router(photo.router, prefix="/photo", tags=['Photo'])
 
 
 if __name__ == '__main__':
