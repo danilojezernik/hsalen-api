@@ -22,7 +22,7 @@ def drop():
     # proces.event.drop()
     # proces.subscriber.drop()
     # proces.newsletter.drop()
-    proces.review.drop()
+    # proces.review.drop()
     pass
 
 
@@ -34,5 +34,5 @@ def seed():
     # proces.event.insert_many(event)
     # proces.subscriber.insert_many(subscriber)
     # proces.newsletter.insert_many(newsletter)
-    proces.review.insert_many(review)
+    # proces.review.insert_many(review)
     pass
