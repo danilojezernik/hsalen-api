@@ -1,7 +1,7 @@
 tags_metadata = [
     {
         "name": "Blog",
-        "description": "uporablja se prefix /api/blog",
+        "description": "uporablja se prefix /blog",
         "externalDocs": {
             "description": "Zunanja dokumentacija",
             "url": "https://fastapi.tiangolo.com/",
@@ -9,7 +9,7 @@ tags_metadata = [
     },
     {
         "name": "LogIn",
-        "description": "uporablja se prefix /api/login - OAuth2",
+        "description": "uporablja se prefix /login - OAuth2",
         "externalDocs": {
             "description": "Zunanja dokumentacija",
             "url": "https://fastapi.tiangolo.com/tutorial/security/first-steps/",
@@ -17,7 +17,7 @@ tags_metadata = [
     },
     {
         "name": "Admin",
-        "description": "uporablja se prefix /api/admin -> uporablja se za redirect",
+        "description": "uporablja se prefix /admin -> uporablja se za redirect",
         "externalDocs": {
             "description": "Zunanja dokumentacija za DEPENDENCIES",
             "url": "https://fastapi.tiangolo.com/tutorial/bigger-applications/#dependencies",
@@ -25,22 +25,26 @@ tags_metadata = [
     },
     {
         "name": "Mediji",
-        "description": "uporablja se prefix /api/mediji"
+        "description": "uporablja se prefix /mediji"
     },
     {
         "name": "Events",
-        "description": "uporablja se prefix /api/events"
+        "description": "uporablja se prefix /events"
     },
     {
         "name": "Contact",
-        "description": "uporablja se prefix /api/email"
+        "description": "uporablja se prefix /email"
+    },
+    {
+        "name": "Review",
+        "description": "uporablja se prefix /review"
     },
     {
         "name": "Subscriber",
-        "description": "uporablja se prefix /api/subscriber"
+        "description": "uporablja se prefix /subscriber"
     },
     {
         "name": "Newsletter",
-        "description": "uporablja se prefix /api/newsletter"
+        "description": "uporablja se prefix /newsletter"
     }
 ]
