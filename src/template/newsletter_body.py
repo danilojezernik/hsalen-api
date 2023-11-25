@@ -412,19 +412,19 @@ def html_newsletter(title: str, content: str) -> str:
                             <table style="text-align: center; border-bottom: 1px solid #bdbdbd; ">
                                 <tr>
                                     <td class="content-block">
-                                        <a href="#" class="anchor-decoration" style="color: black">Domov</a>
+                                        <a href="https://hypnosisstudioalen.si/" class="anchor-decoration" style="color: black">Domov</a>
                                     </td>
                                     <td class="content-block">
-                                        <a href="#" class="anchor-decoration" style="color: black">Blog</a>
+                                        <a href="https://hypnosisstudioalen.si/blog" class="anchor-decoration" style="color: black">Blog</a>
                                     </td>
                                     <td class="content-block">
-                                        <a href="#" class="anchor-decoration" style="color: black">O meni</a>
+                                        <a href="https://hypnosisstudioalen.si/omeni" class="anchor-decoration" style="color: black">O meni</a>
                                     </td>
                                     <td class="content-block">
-                                        <a href="#" class="anchor-decoration" style="color: black">Dogodki</a>
+                                        <a href="https://hypnosisstudioalen.si/dogodki" class="anchor-decoration" style="color: black">Dogodki</a>
                                     </td>
                                     <td class="content-block">
-                                        <a href="#" class="anchor-decoration" style="color: black">Kontakt</a>
+                                        <a href="https://hypnosisstudioalen.si/kontakt" class="anchor-decoration" style="color: black">Kontakt</a>
                                     </td>
                                 </tr>
                             </table>
