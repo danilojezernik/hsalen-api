@@ -34,7 +34,7 @@ def send(email_from: str, subject: str, body: str) -> bool:
 
     # TODO: ALENU NASTAVI GOOGLE PASSWORD ZA DOBIVANJE EMAILOV - PASSWORD + SENDER
     # Establish an SSL connection to Gmail's SMTP server
-    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+    with smtplib.SMTP_SSL('hypnosisstudioalen.si', 465) as smtp:
         smtp.login(env.EMAIL_ME, env.EMAIL_PASSWORD)
 
         # Send the email from 'env.EMAIL_ME' to 'email_from'
