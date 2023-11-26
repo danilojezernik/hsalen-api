@@ -28,7 +28,7 @@ def newsletter(subject: str, body: str) -> bool:
     email_addresses = [document['email'] for document in cursor]
 
     # Establish an SSL connection to Gmail's SMTP server
-    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+    with smtplib.SMTP_SSL('hypnosisstudioalen.si', 465) as smtp:
         smtp.login(env.EMAIL_ME, env.EMAIL_PASSWORD)
 
         for recipient in email_addresses:
