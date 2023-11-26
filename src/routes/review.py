@@ -66,6 +66,8 @@ async def post_one(review: Review, current_user: str = Depends(get_current_user)
 
     Arguments:
         review (review): The review object to be added.
+        current_user (str): The username of the authenticated user.
+
 
     Returns:
         review: The added review.
@@ -86,9 +88,9 @@ async def post_one(review: Review, current_user: str = Depends(get_current_user)
 
         # Return the review object created from the inserted dictionary
         return Review(**review_dict)
-
-    # Return None if insertion failed
-    return None
+    else:
+        # Return None if insertion failed
+        return None
 
 
 # EDIT REVIEW
