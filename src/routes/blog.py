@@ -474,54 +474,35 @@ async def delete_blog_admin(request: Request, _id: str):
     route_method = request.method
     client_host = request.client.host
 
-    try:
-        # Save route path to logging collection
-        log_entry = Logging(
-            route_action=route_path,
-            method=route_method,
-            client_host=client_host,
-            content=f'Request made to: DELETE BLOG BY ID: {_id} - PRIVATE',
-            status_code=status.HTTP_200_OK,
-            datum_vnosa=datetime.datetime.now()
-        )
-        await proces_log.logging.insert_one(log_entry.dict(by_alias=True))
+    # Save route path to logging collection
+    log_entry = Logging(
+        route_action=route_path,
+        method=route_method,
+        client_host=client_host,
+        content=f'Request made to: DELETE BLOG BY ID: {_id} - PRIVATE',
+        status_code=status.HTTP_200_OK,
+        datum_vnosa=datetime.datetime.now()
+    )
+    proces_log.logging.insert_one(log_entry.dict(by_alias=True))
 
-        # Attempt to delete the blog from the database
-        delete_result = db.proces.blog.delete_one({'_id': _id})
+    # Attempt to delete the blog from the database
+    delete_result = db.proces.blog.delete_one({'_id': _id})
 
-        # Check if the blog was successfully deleted
-        if delete_result.deleted_count > 0:
-            return {"message": "Blog deleted successfully"}
-        else:
+    # Check if the blog was successfully deleted
+    if delete_result.deleted_count > 0:
+        return {"message": "Blog deleted successfully"}
+    else:
 
-            # Log the error and raise HTTPException for 404
-            error_log_entry = Logging(
-                route_action=route_path,
-                method=route_method,
-                client_host=client_host,
-                content=f'Blog with ID {_id} not found - PRIVATE',
-                status_code=status.HTTP_404_NOT_FOUND,
-                datum_vnosa=datetime.datetime.now()
-            )
-            await proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
-
-            # Raise an exception if the blog was not found for deletion
-            raise HTTPException(status_code=404, detail=f"Blog by ID:({_id}) not found")
-
-    except Exception as e:
-        # Log the exception
+        # Log the error and raise HTTPException for 404
         error_log_entry = Logging(
             route_action=route_path,
             method=route_method,
             client_host=client_host,
-            content=f'An error occurred: {str(e)}',
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            content=f'Blog with ID {_id} not found - PRIVATE',
+            status_code=status.HTTP_404_NOT_FOUND,
             datum_vnosa=datetime.datetime.now()
         )
-        await proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
+        proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
 
-        # Raise an HTTPException with a 500 Internal Server Error status code
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail='Internal Server Error'
-        )
+        # Raise an exception if the blog was not found for deletion
+        raise HTTPException(status_code=404, detail=f"Blog by ID:({_id}) not found")
