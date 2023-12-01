@@ -450,8 +450,8 @@ async def edit_blog_admin(request: Request, _id: str, blog: Blog, current_user: 
 
 
 # Delete a blog by its ID from the database
-@router.delete("/admin/{_id}", operation_id="delete_blog_admin", include_in_schema=False)
-async def delete_blog_admin(request: Request, _id: str, current_user: str = Depends(get_current_user)):
+@router.delete("/admin/{_id}", operation_id="delete_blog_admin")
+async def delete_blog_admin(request: Request, _id: str):
     """
     Route to delete a blog by its ID from the database.
 
@@ -478,7 +478,7 @@ async def delete_blog_admin(request: Request, _id: str, current_user: str = Depe
         # Save route path to logging collection
         log_entry = Logging(
             route_action=route_path,
-            method='DELETE',
+            method=route_method,
             client_host=client_host,
             content=f'Request made to: DELETE BLOG BY ID: {_id} - PRIVATE',
             status_code=status.HTTP_200_OK,
