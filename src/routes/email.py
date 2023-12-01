@@ -155,7 +155,7 @@ def get_all_emails(request: Request, current_user: str = Depends(get_current_use
 
 # ADMIN DELETE EMAIL
 @router.delete("/{_id}", operation_id="delete_email_admin")
-async def delete_email_admin(_id: str, current_user: str = Depends(get_current_user)):
+async def delete_email_admin(request: Request, _id: str, current_user: str = Depends(get_current_user)):
     """
     Route to delete an email by its ID from the database.
 
@@ -170,12 +170,45 @@ async def delete_email_admin(_id: str, current_user: str = Depends(get_current_u
         HTTPException: If email is not found for deletion.
     """
 
-    # Attempt to delete email from the database
-    delete_result = db.proces.email.delete_one({'_id': _id})
+    # Get the path and method of the current route and client host from the request
+    route_path = request.url.path
+    route_method = request.method
+    client_host = request.client.host
 
-    # Check if email was successfully deleted
-    if delete_result.deleted_count > 0:
-        return {"message": "Email deleted successfully"}
-    else:
-        # Raise an exception if email was not found for deletion
-        raise HTTPException(status_code=404, detail=f"Email by ID: ({_id}) not found")
+    try:
+        # Save route path to logging collection
+        log_entry = Logging(
+            route_action=route_path,
+            method=route_method,
+            client_host=client_host,
+            content='Request made to: ADMIN DELETE EMAIL - PRIVATE',
+            status_code=status.HTTP_200_OK,
+            datum_vnosa=datetime.datetime.now()
+        )
+        proces_log.logging.insert_one(log_entry.dict(by_alias=True))
+        # Attempt to delete email from the database
+        delete_result = db.proces.email.delete_one({'_id': _id})
+
+        # Check if email was successfully deleted
+        if delete_result.deleted_count > 0:
+            return {"message": "Email deleted successfully"}
+        else:
+            # Raise an exception if email was not found for deletion
+            raise HTTPException(status_code=404, detail=f"Email by ID: ({_id}) not found")
+    except Exception as e:
+        # Log the exception
+        error_log_entry = Logging(
+            route_action=route_path,
+            method=route_method,
+            client_host=client_host,
+            content=f'An error occurred: {str(e)}',
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            datum_vnosa=datetime.datetime.now()
+        )
+        proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
+
+        # Raise an HTTPException with a 500 Internal Server Error status code
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail='Internal Server Error'
+        )
