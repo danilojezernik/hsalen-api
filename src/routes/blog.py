@@ -525,3 +525,9 @@ async def delete_blog_admin(request: Request, _id: str):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail='Internal Server Error'
         )
+
+
+# Add an OPTIONS route
+@router.options("/admin/{_id}", include_in_schema=False)
+async def options_blog_admin(request: Request, _id: str):
+    return {}
