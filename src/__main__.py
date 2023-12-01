@@ -17,7 +17,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from src import env
 from src.routes import mediji, admin, login, blog, email, events, subscriber, newsletter, review
 # from src.services import db
-from src.services import db_logging
+# from src.services import db_logging
 from src.tags_metadata import tags_metadata
 
 app = FastAPI(openapi_tags=tags_metadata)
@@ -50,8 +50,8 @@ if __name__ == '__main__':
     # Drop the database and seed it
     # db.drop()
     # db.seed()
-    db_logging.drop_log()
-    db_logging.seed_log()
+    # db_logging.drop_log()
+    # db_logging.seed_log()
 
     # Run the FastAPI application using Uvicorn server
     uvicorn.run(app, host="0.0.0.0", port=env.PORT)
