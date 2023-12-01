@@ -13,18 +13,20 @@ import datetime
 # Import necessary modules and classes
 from fastapi import APIRouter, HTTPException, Depends, status, Request
 
-from src.domain.logging import Logging
 from src.services import db
 from src.domain.blog import Blog
-from src.services.db_logging import proces_log
 from src.services.security import get_current_user
+
+# Logging
+from src.domain.logging import Logging
+from src.services.db_logging import proces_log
 
 # Create a router for handling Mediji related endpoints
 router = APIRouter()
 
 
 # GET ALL BLOG
-@router.get("/", operation_id="get_all_blogs", status_code=200)
+@router.get("/", operation_id="get_all_blogs")
 async def get_all(request: Request) -> list[Blog]:
     """
     This route handles the retrieval of all blogs from the database.
@@ -34,7 +36,7 @@ async def get_all(request: Request) -> list[Blog]:
     - Returns a list of Blog objects.
     """
 
-    # Get the path of the current route from the request
+    # Get the path and method of the current route and client host from the request
     route_path = request.url.path
     route_method = request.method
     client_host = request.client.host
