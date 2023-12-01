@@ -326,16 +326,6 @@ async def post_one_admin(blog: Blog, current_user: str = Depends(get_current_use
     # Check if the insertion was acknowledged and update the blog's ID
     if insert_result.acknowledged:
         blog_dict['_id'] = str(insert_result.inserted_id)
-
-        log_entry = Logging(
-            route_action='admin',
-            method='POST',
-            client_host='HOST',
-            content='Request made to: ADMIN DELETE EMAIL - PRIVATE',
-            status_code=status.HTTP_200_OK,
-            datum_vnosa=datetime.datetime.now()
-        )
-        proces_log.logging.insert_one(log_entry.dict(by_alias=True))
         return Blog(**blog_dict)
     else:
         return None
