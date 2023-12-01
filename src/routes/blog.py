@@ -51,7 +51,7 @@ async def get_all(request: Request) -> list[Blog]:
             status_code=status.HTTP_200_OK,
             datum_vnosa=datetime.datetime.now()
         )
-        await proces_log.logging.insert_one(log_entry.dict(by_alias=True))
+        proces_log.logging.insert_one(log_entry.dict(by_alias=True))
 
         # Retrieve all blogs from the database
         cursor = db.proces.blog.find()
@@ -67,7 +67,7 @@ async def get_all(request: Request) -> list[Blog]:
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             datum_vnosa=datetime.datetime.now()
         )
-        await proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
+        proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
 
         # Raise an HTTPException with a 500 Internal Server Error status code
         raise HTTPException(
@@ -102,7 +102,7 @@ async def get_limited_blogs(request: Request) -> list[Blog]:
             status_code=status.HTTP_200_OK,
             datum_vnosa=datetime.datetime.now()
         )
-        await proces_log.logging.insert_one(log_entry.dict(by_alias=True))
+        proces_log.logging.insert_one(log_entry.dict(by_alias=True))
 
         # Retrieve limited amount of blogs from the database
         cursor = db.proces.blog.find().limit(4)
@@ -118,7 +118,7 @@ async def get_limited_blogs(request: Request) -> list[Blog]:
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             datum_vnosa=datetime.datetime.now()
         )
-        await proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
+        proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
 
         # Raise an HTTPException with a 500 Internal Server Error status code
         raise HTTPException(
@@ -156,7 +156,7 @@ async def get_blog_id(request: Request, _id: str):
             status_code=status.HTTP_200_OK,
             datum_vnosa=datetime.datetime.now()
         )
-        await proces_log.logging.insert_one(log_entry.dict(by_alias=True))
+        proces_log.logging.insert_one(log_entry.dict(by_alias=True))
 
         # Retrieve a blog by its ID from the database
         cursor = db.proces.blog.find_one({'_id': _id})
@@ -175,7 +175,7 @@ async def get_blog_id(request: Request, _id: str):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             datum_vnosa=datetime.datetime.now()
         )
-        await proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
+        proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
 
         # Raise an HTTPException with a 500 Internal Server Error status code
         raise HTTPException(
@@ -212,7 +212,7 @@ async def get_all_admin(request: Request, current_user: str = Depends(get_curren
             status_code=status.HTTP_200_OK,
             datum_vnosa=datetime.datetime.now()
         )
-        await proces_log.logging.insert_one(log_entry.dict(by_alias=True))
+        proces_log.logging.insert_one(log_entry.dict(by_alias=True))
 
         # Retrieve all blogs from the database for ADMIN
         cursor = db.proces.blog.find()
@@ -228,7 +228,7 @@ async def get_all_admin(request: Request, current_user: str = Depends(get_curren
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             datum_vnosa=datetime.datetime.now()
         )
-        await proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
+        proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
 
         # Raise an HTTPException with a 500 Internal Server Error status code
         raise HTTPException(
@@ -266,7 +266,7 @@ async def get_blog_id_admin(request: Request, _id: str, current_user: str = Depe
             status_code=status.HTTP_200_OK,
             datum_vnosa=datetime.datetime.now()
         )
-        await proces_log.logging.insert_one(log_entry.dict(by_alias=True))
+        proces_log.logging.insert_one(log_entry.dict(by_alias=True))
 
         # Retrieve a blog by its ID from the database
         cursor = db.proces.blog.find_one({'_id': _id})
@@ -280,7 +280,7 @@ async def get_blog_id_admin(request: Request, _id: str, current_user: str = Depe
                 status_code=status.HTTP_404_NOT_FOUND,
                 datum_vnosa=datetime.datetime.now()
             )
-            await proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
+            proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
             raise HTTPException(status_code=404, detail=f"Blog by ID:{_id} does not exist")
         else:
             return Blog(**cursor)
@@ -295,7 +295,7 @@ async def get_blog_id_admin(request: Request, _id: str, current_user: str = Depe
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             datum_vnosa=datetime.datetime.now()
         )
-        await proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
+        proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
 
         # Raise an HTTPException with a 500 Internal Server Error status code
         raise HTTPException(
@@ -333,7 +333,7 @@ async def post_one_admin(request: Request, blog: Blog, current_user: str = Depen
             status_code=status.HTTP_200_OK,
             datum_vnosa=datetime.datetime.now()
         )
-        await proces_log.logging.insert_one(log_entry.dict(by_alias=True))
+        proces_log.logging.insert_one(log_entry.dict(by_alias=True))
         # Add a new blog to the database
         blog_dict = blog.dict(by_alias=True)
         insert_result = db.proces.blog.insert_one(blog_dict)
@@ -355,7 +355,7 @@ async def post_one_admin(request: Request, blog: Blog, current_user: str = Depen
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             datum_vnosa=datetime.datetime.now()
         )
-        await proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
+        proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
 
         # Raise an HTTPException with a 500 Internal Server Error status code
         raise HTTPException(
@@ -394,7 +394,7 @@ async def edit_blog_admin(request: Request, _id: str, blog: Blog, current_user: 
             status_code=status.HTTP_200_OK,
             datum_vnosa=datetime.datetime.now()
         )
-        await proces_log.logging.insert_one(log_entry.dict(by_alias=True))
+        proces_log.logging.insert_one(log_entry.dict(by_alias=True))
         # Edit an existing blog by its ID in the database
         blog = blog.dict(by_alias=True)
         del blog['_id']
@@ -423,7 +423,7 @@ async def edit_blog_admin(request: Request, _id: str, blog: Blog, current_user: 
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             datum_vnosa=datetime.datetime.now()
         )
-        await proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
+        proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
 
         # Raise an HTTPException with a 500 Internal Server Error status code
         raise HTTPException(
@@ -466,7 +466,7 @@ async def delete_blog_admin(request: Request, _id: str, current_user: str = Depe
             status_code=status.HTTP_200_OK,
             datum_vnosa=datetime.datetime.now()
         )
-        await proces_log.logging.insert_one(log_entry.dict(by_alias=True))
+        proces_log.logging.insert_one(log_entry.dict(by_alias=True))
         # Attempt to delete the blog from the database
         delete_result = db.proces.blog.delete_one({'_id': _id})
 
@@ -486,7 +486,7 @@ async def delete_blog_admin(request: Request, _id: str, current_user: str = Depe
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             datum_vnosa=datetime.datetime.now()
         )
-        await proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
+        proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
 
         # Raise an HTTPException with a 500 Internal Server Error status code
         raise HTTPException(
