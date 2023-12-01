@@ -451,7 +451,7 @@ async def edit_blog_admin(request: Request, _id: str, blog: Blog, current_user: 
 
 # Delete a blog by its ID from the database
 @router.delete("/admin/{_id}", operation_id="delete_blog_admin")
-async def delete_blog_admin(request: Request, _id: str):
+async def delete_blog_admin(request: Request, _id: str, current_user: str = Depends(get_current_user)):
     """
     Route to delete a blog by its ID from the database.
 
@@ -464,45 +464,28 @@ async def delete_blog_admin(request: Request, _id: str):
 
     Raises:
         HTTPException: If the blog is not found for deletion.
-        :param current_user: authentication
+        :param current_user: The current authenticated user.
         :param _id: ID of the blog
-        :param request: path to the request
     """
-
-    # Get the path of the current route from the request
-    route_path = request.url.path
-    route_method = request.method
-    client_host = request.client.host
-
-    # Save route path to logging collection
-    log_entry = Logging(
-        route_action=route_path,
-        method=route_method,
-        client_host=client_host,
-        content=f'Request made to: DELETE BLOG BY ID: {_id} - PRIVATE',
-        status_code=status.HTTP_200_OK,
-        datum_vnosa=datetime.datetime.now()
-    )
-    proces_log.logging.insert_one(log_entry.dict(by_alias=True))
 
     # Attempt to delete the blog from the database
     delete_result = db.proces.blog.delete_one({'_id': _id})
 
     # Check if the blog was successfully deleted
     if delete_result.deleted_count > 0:
-        return {"message": "Blog deleted successfully"}
-    else:
-
-        # Log the error and raise HTTPException for 404
+        # Get the path of the current route from the request
+        route_path = request.url.path
+        route_method = request.method
+        client_host = request.client.host
         error_log_entry = Logging(
             route_action=route_path,
             method=route_method,
             client_host=client_host,
-            content=f'Blog with ID {_id} not found - PRIVATE',
-            status_code=status.HTTP_404_NOT_FOUND,
+            content=f'Blog with ID {_id} not updated',
+            status_code=status.HTTP_400_BAD_REQUEST,
             datum_vnosa=datetime.datetime.now()
         )
         proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
-
-        # Raise an exception if the blog was not found for deletion
+        return {"message": "Blog deleted successfully"}
+    else:
         raise HTTPException(status_code=404, detail=f"Blog by ID:({_id}) not found")
