@@ -9,7 +9,7 @@ Routes:
 5. Delete a blog by ID
 """
 import datetime
-import uuid
+
 # Import necessary modules and classes
 from fastapi import APIRouter, HTTPException, Depends, status, Request
 
@@ -44,7 +44,6 @@ async def get_all(request: Request) -> list[Blog]:
     try:
         # Save route path to logging collection
         log_entry = Logging(
-            id=str(uuid.uuid4()),
             route_action=route_path,
             method=route_method,
             client_host=client_host,
@@ -61,7 +60,6 @@ async def get_all(request: Request) -> list[Blog]:
     except Exception as e:
         # Log the exception
         error_log_entry = Logging(
-            id=str(uuid.uuid4()),
             route_action=route_path,
             method=route_method,
             client_host=client_host,
@@ -97,7 +95,6 @@ async def get_limited_blogs(request: Request) -> list[Blog]:
     try:
         # Save route path to logging collection
         log_entry = Logging(
-            id=str(uuid.uuid4()),
             route_action=route_path,
             method=route_method,
             client_host=client_host,
@@ -114,7 +111,6 @@ async def get_limited_blogs(request: Request) -> list[Blog]:
     except Exception as e:
         # Log the exception
         error_log_entry = Logging(
-            id=str(uuid.uuid4()),
             route_action=route_path,
             method=route_method,
             client_host=client_host,
@@ -153,7 +149,6 @@ async def get_blog_id(request: Request, _id: str):
     try:
         # Save route path to logging collection
         log_entry = Logging(
-            id=str(uuid.uuid4()),
             route_action=route_path,
             method=route_method,
             client_host=client_host,
@@ -173,7 +168,6 @@ async def get_blog_id(request: Request, _id: str):
     except Exception as e:
         # Log the exception
         error_log_entry = Logging(
-            id=str(uuid.uuid4()),
             route_action=route_path,
             method=route_method,
             client_host=client_host,
@@ -211,7 +205,6 @@ async def get_all_admin(request: Request, current_user: str = Depends(get_curren
     try:
         # Save route path to logging collection
         log_entry = Logging(
-            id=str(uuid.uuid4()),
             route_action=route_path,
             method=route_method,
             client_host=client_host,
@@ -266,7 +259,6 @@ async def get_blog_id_admin(request: Request, _id: str, current_user: str = Depe
     try:
         # Save route path to logging collection
         log_entry = Logging(
-            id=str(uuid.uuid4()),
             route_action=route_path,
             method=route_method,
             client_host=client_host,
@@ -296,7 +288,6 @@ async def get_blog_id_admin(request: Request, _id: str, current_user: str = Depe
     except Exception as e:
         # Log the exception with detailed information
         error_log_entry = Logging(
-            id=str(uuid.uuid4()),
             route_action=route_path,
             method=route_method,
             client_host=client_host,
@@ -335,7 +326,6 @@ async def post_one_admin(request: Request, blog: Blog, current_user: str = Depen
     try:
         # Save route path to logging collection
         log_entry = Logging(
-            id=str(uuid.uuid4()),
             route_action=route_path,
             method=route_method,
             client_host=client_host,
@@ -358,7 +348,6 @@ async def post_one_admin(request: Request, blog: Blog, current_user: str = Depen
     except Exception as e:
         # Log the exception with detailed information
         error_log_entry = Logging(
-            id=str(uuid.uuid4()),
             route_action=route_path,
             method=route_method,
             client_host=client_host,
@@ -398,7 +387,6 @@ async def edit_blog_admin(request: Request, _id: str, blog: Blog, current_user: 
     try:
         # Save route path to logging collection
         log_entry = Logging(
-            id=str(uuid.uuid4()),
             route_action=route_path,
             method=route_method,
             client_host=client_host,
@@ -428,7 +416,6 @@ async def edit_blog_admin(request: Request, _id: str, blog: Blog, current_user: 
     except Exception as e:
         # Log the exception with detailed information
         error_log_entry = Logging(
-            id=str(uuid.uuid4()),
             route_action=route_path,
             method=route_method,
             client_host=client_host,
@@ -472,7 +459,6 @@ async def delete_blog_admin(request: Request, _id: str, current_user: str = Depe
     try:
         # Save route path to logging collection
         log_entry = Logging(
-            id=str(uuid.uuid4()),
             route_action=route_path,
             method=route_method,
             client_host=client_host,
@@ -493,7 +479,6 @@ async def delete_blog_admin(request: Request, _id: str, current_user: str = Depe
     except Exception as e:
         # Log the exception with detailed information
         error_log_entry = Logging(
-            id=str(uuid.uuid4()),
             route_action=route_path,
             method=route_method,
             client_host=client_host,
