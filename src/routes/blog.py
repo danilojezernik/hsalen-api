@@ -478,7 +478,7 @@ async def delete_blog_admin(request: Request, _id: str, current_user: str = Depe
         # Save route path to logging collection
         log_entry = Logging(
             route_action=route_path,
-            method=route_method,
+            method='DELETE',
             client_host=client_host,
             content=f'Request made to: DELETE BLOG BY ID: {_id} - PRIVATE',
             status_code=status.HTTP_200_OK,
