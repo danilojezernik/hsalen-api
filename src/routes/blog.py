@@ -484,7 +484,7 @@ async def delete_blog_admin(request: Request, _id: str):
             status_code=status.HTTP_200_OK,
             datum_vnosa=datetime.datetime.now()
         )
-        proces_log.logging.insert_one(log_entry.dict(by_alias=True))
+        await proces_log.logging.insert_one(log_entry.dict(by_alias=True))
 
         # Attempt to delete the blog from the database
         delete_result = db.proces.blog.delete_one({'_id': _id})
@@ -503,7 +503,7 @@ async def delete_blog_admin(request: Request, _id: str):
                 status_code=status.HTTP_404_NOT_FOUND,
                 datum_vnosa=datetime.datetime.now()
             )
-            proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
+            await proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
 
             # Raise an exception if the blog was not found for deletion
             raise HTTPException(status_code=404, detail=f"Blog by ID:({_id}) not found")
@@ -518,16 +518,10 @@ async def delete_blog_admin(request: Request, _id: str):
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             datum_vnosa=datetime.datetime.now()
         )
-        proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
+        await proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
 
         # Raise an HTTPException with a 500 Internal Server Error status code
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail='Internal Server Error'
         )
-
-
-# Add an OPTIONS route
-@router.options("/admin/{_id}", include_in_schema=False)
-async def options_blog_admin(request: Request, _id: str):
-    return {}
