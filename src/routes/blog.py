@@ -306,7 +306,7 @@ async def get_blog_id_admin(request: Request, _id: str, current_user: str = Depe
 
 # Add blog for Admin
 @router.post("/admin", operation_id="add_blog_admin")
-async def post_one_admin(request: Request, blog: Blog, current_user: str = Depends(get_current_user)) -> Blog | None:
+async def post_one_admin(blog: Blog, current_user: str = Depends(get_current_user)) -> Blog | None:
     """
     This route adds a new blog to the database.
 
@@ -318,10 +318,7 @@ async def post_one_admin(request: Request, blog: Blog, current_user: str = Depen
     - Adds a new blog to the database.
     - Returns the added Blog object if successful, or None if unsuccessful.
     """
-    # Get the path and method of the current route and client host from the request
-    route_path = request.url.path
-    route_method = request.method
-    client_host = request.client.host
+
     # Add a new blog to the database
     blog_dict = blog.dict(by_alias=True)
     insert_result = db.proces.blog.insert_one(blog_dict)
@@ -331,15 +328,14 @@ async def post_one_admin(request: Request, blog: Blog, current_user: str = Depen
         blog_dict['_id'] = str(insert_result.inserted_id)
 
         log_entry = Logging(
-            route_action=route_path,
-            method=route_method,
-            client_host=client_host,
+            route_action='admin',
+            method='POST',
+            client_host='HOST',
             content='Request made to: ADMIN DELETE EMAIL - PRIVATE',
             status_code=status.HTTP_200_OK,
             datum_vnosa=datetime.datetime.now()
         )
         proces_log.logging.insert_one(log_entry.dict(by_alias=True))
-
         return Blog(**blog_dict)
     else:
         return None
