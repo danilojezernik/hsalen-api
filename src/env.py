@@ -13,6 +13,8 @@ ALGORITHM = str(os.getenv('ALGORITHM'))
 EMAIL_PASSWORD = str(os.getenv('EMAIL_PASSWORD'))
 EMAIL_ME = str(os.getenv('EMAIL_ME'))
 DOMAIN = str(os.getenv('DOMAIN'))
+DB_PROCES_LOGGING = str(os.getenv('DB_PROCES_LOGGING'))
+DB_CONNECTION_LOGGING = str(os.getenv('DB_CONNECTION_LOGGING'))
 
 # TESTING
 EMAIL_1 = str(os.getenv('EMAIL_1'))
