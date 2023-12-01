@@ -318,57 +318,36 @@ async def post_one_admin(request: Request, blog: Blog, current_user: str = Depen
     - Adds a new blog to the database.
     - Returns the added Blog object if successful, or None if unsuccessful.
     """
-
-    # Get the path of the current route from the request
+    # Get the path and method of the current route and client host from the request
     route_path = request.url.path
     route_method = request.method
     client_host = request.client.host
+    # Add a new blog to the database
+    blog_dict = blog.dict(by_alias=True)
+    insert_result = db.proces.blog.insert_one(blog_dict)
 
-    try:
-        # Save route path to logging collection
+    # Check if the insertion was acknowledged and update the blog's ID
+    if insert_result.acknowledged:
+        blog_dict['_id'] = str(insert_result.inserted_id)
+
         log_entry = Logging(
             route_action=route_path,
             method=route_method,
             client_host=client_host,
-            content='Request made to: ADD BLOG - PRIVATE',
+            content='Request made to: ADMIN DELETE EMAIL - PRIVATE',
             status_code=status.HTTP_200_OK,
             datum_vnosa=datetime.datetime.now()
         )
         proces_log.logging.insert_one(log_entry.dict(by_alias=True))
 
-        # Add a new blog to the database
-        blog_dict = blog.dict(by_alias=True)
-        insert_result = db.proces.blog.insert_one(blog_dict)
-
-        # Check if the insertion was acknowledged and update the blog's ID
-        if insert_result.acknowledged:
-            blog_dict['_id'] = str(insert_result.inserted_id)
-            return Blog(**blog_dict)
-        else:
-            return None
-
-    except Exception as e:
-        # Log the exception
-        error_log_entry = Logging(
-            route_action=route_path,
-            method=route_method,
-            client_host=client_host,
-            content=f'An error occurred: {str(e)}',
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            datum_vnosa=datetime.datetime.now()
-        )
-        proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
-
-        # Raise an HTTPException with a 500 Internal Server Error status code
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail='Internal Server Error'
-        )
+        return Blog(**blog_dict)
+    else:
+        return None
 
 
 # Edit by ID
 @router.put("/admin/{_id}", operation_id="edit_blog_admin")
-async def edit_blog_admin(request: Request, _id: str, blog: Blog, current_user: str = Depends(get_current_user)) -> Blog | None:
+async def edit_blog_admin(_id: str, blog: Blog, current_user: str = Depends(get_current_user)) -> Blog | None:
     """
     This route edits an existing blog by its ID in the database.
 
@@ -382,76 +361,29 @@ async def edit_blog_admin(request: Request, _id: str, blog: Blog, current_user: 
     - Returns the updated Blog object if successful, or None if unsuccessful.
     """
 
-    # Get the path of the current route from the request
-    route_path = request.url.path
-    route_method = request.method
-    client_host = request.client.host
+    # Edit an existing blog by its ID in the database
+    blog = blog.dict(by_alias=True)
+    del blog['_id']
 
-    try:
-        # Save route path to logging collection
-        log_entry = Logging(
-            route_action=route_path,
-            method=route_method,
-            client_host=client_host,
-            content=f'Request made to: EDIT BLOG BY ID: {_id} - PRIVATE',
-            status_code=status.HTTP_200_OK,
-            datum_vnosa=datetime.datetime.now()
-        )
-        proces_log.logging.insert_one(log_entry.dict(by_alias=True))
+    # Update the blog in the database
+    cursor = db.proces.blog.update_one({'_id': _id}, {'$set': blog})
 
-        # Edit an existing blog by its ID in the database
-        blog = blog.dict(by_alias=True)
-        del blog['_id']
+    # Check if the blog was successfully updated
+    if cursor.modified_count > 0:
+        # Retrieve the updated blog from the database
+        updated_document = db.proces.blog.find_one({'_id': _id})
 
-        # Update the blog in the database
-        cursor = db.proces.blog.update_one({'_id': _id}, {'$set': blog})
-
-        # Check if the blog was successfully updated
-        if cursor.modified_count > 0:
-            # Retrieve the updated blog from the database
-            updated_document = db.proces.blog.find_one({'_id': _id})
-
-            # Check if the updated blog exists
-            if updated_document:
-                updated_document['_id'] = str(updated_document['_id'])
-                return Blog(**updated_document)
-
-        # Log unsuccessful update
-        error_log_entry = Logging(
-            route_action=route_path,
-            method=route_method,
-            client_host=client_host,
-            content=f'Blog with ID {_id} not updated',
-            status_code=status.HTTP_400_BAD_REQUEST,
-            datum_vnosa=datetime.datetime.now()
-        )
-        proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
-
-        # Return None if the blog was not updated
-        return None
-
-    except Exception as e:
-        # Log the exception
-        error_log_entry = Logging(
-            route_action=route_path,
-            method=route_method,
-            client_host=client_host,
-            content=f'An error occurred: {str(e)}',
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            datum_vnosa=datetime.datetime.now()
-        )
-        proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
-
-        # Raise an HTTPException with a 500 Internal Server Error status code
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail='Internal Server Error'
-        )
+        # Check if the updated blog exists
+        if updated_document:
+            updated_document['_id'] = str(updated_document['_id'])
+            return Blog(**updated_document)
+    # Return None if the blog was not updated
+    return None
 
 
 # Delete a blog by its ID from the database
 @router.delete("/admin/{_id}", operation_id="delete_blog_admin")
-async def delete_blog_admin(request: Request, _id: str, current_user: str = Depends(get_current_user)):
+async def delete_blog_admin(_id: str, current_user: str = Depends(get_current_user)):
     """
     Route to delete a blog by its ID from the database.
 
@@ -473,19 +405,6 @@ async def delete_blog_admin(request: Request, _id: str, current_user: str = Depe
 
     # Check if the blog was successfully deleted
     if delete_result.deleted_count > 0:
-        # Get the path of the current route from the request
-        route_path = request.url.path
-        route_method = request.method
-        client_host = request.client.host
-        error_log_entry = Logging(
-            route_action=route_path,
-            method=route_method,
-            client_host=client_host,
-            content=f'Blog with ID {_id} not updated',
-            status_code=status.HTTP_400_BAD_REQUEST,
-            datum_vnosa=datetime.datetime.now()
-        )
-        proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
         return {"message": "Blog deleted successfully"}
     else:
         raise HTTPException(status_code=404, detail=f"Blog by ID:({_id}) not found")
