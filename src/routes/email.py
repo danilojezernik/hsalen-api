@@ -1,15 +1,9 @@
-import datetime
-
-from fastapi import APIRouter, HTTPException, Depends, status, Request
+from fastapi import APIRouter, HTTPException, Depends
 
 from src.domain.mail import Email
 from src.services import emails, db
 from src.template import email
 from src.services.security import get_current_user
-
-# Logging
-from src.domain.logging import Logging
-from src.services.db_logging import proces_log
 
 router = APIRouter()
 
@@ -54,7 +48,7 @@ async def user_send_email(emailing: Email):
 
 # ADMIN GETTING EMAILS
 @router.get("/", operation_id="get_all_emails_admin")
-def get_all_emails(request: Request, current_user: str = Depends(get_current_user)) -> list[Email]:
+def get_all_emails(current_user: str = Depends(get_current_user)) -> list[Email]:
     """
     Route for retrieving all stored emails from the database.
 
@@ -63,47 +57,12 @@ def get_all_emails(request: Request, current_user: str = Depends(get_current_use
 
     Returns:
         list[Email]: A list of email objects retrieved from the database.
-        :param request:
         :param current_user: authenticated
     """
 
-    # Get the path and method of the current route and client host from the request
-    route_path = request.url.path
-    route_method = request.method
-    client_host = request.client.host
-    try:
-        # Save route path to logging collection
-        log_entry = Logging(
-            route_action=route_path,
-            method=route_method,
-            client_host=client_host,
-            content='Request made to: GET ALL BLOGS - PUBLIC',
-            status_code=status.HTTP_200_OK,
-            datum_vnosa=datetime.datetime.now()
-        )
-        proces_log.logging.insert_one(log_entry.dict(by_alias=True))
-
-        # Retrieve all emails from the database
-        cursor = db.proces.email.find()
-        return [Email(**document) for document in cursor]
-
-    except Exception as e:
-        # Log the exception
-        error_log_entry = Logging(
-            route_action=route_path,
-            method=route_method,
-            client_host=client_host,
-            content=f'An error occurred: {str(e)}',
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            datum_vnosa=datetime.datetime.now()
-        )
-        proces_log.logging.insert_one(error_log_entry.dict(by_alias=True))
-
-        # Raise an HTTPException with a 500 Internal Server Error status code
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail='Internal Server Error'
-        )
+    # Retrieve all emails from the database
+    cursor = db.proces.email.find()
+    return [Email(**document) for document in cursor]
 
 
 # ADMIN DELETE EMAIL
