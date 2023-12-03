@@ -13,7 +13,6 @@ Routes:
 from fastapi import APIRouter, HTTPException, Depends
 from src.services import db
 from src.domain.mediji import Mediji
-from src.domain.logging import Logging
 
 from src.services.security import get_current_user
 
@@ -47,10 +46,6 @@ def get_mediji_admin(current_user: str = Depends(get_current_user)) -> list[Medi
     Returns:
         list[Mediji]: List of all Mediji in the database.
     """
-
-    logging_dict = Logging(route_action='Get all Medija admin').dict(by_alias=True)
-
-    db.proces.logging.insert_one(logging_dict)
 
     # Retrieve all mediji from the database
     cursor = db.proces.mediji.find()
