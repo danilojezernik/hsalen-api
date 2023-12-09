@@ -1,5 +1,8 @@
-from fastapi import APIRouter, HTTPException, Depends
+import datetime
 
+from fastapi import APIRouter, HTTPException, Depends, Request, status
+
+from src.domain.logs import Logging
 from src.domain.mail import Email
 from src.services import emails, db
 from src.template import email
@@ -10,7 +13,7 @@ router = APIRouter()
 
 # CONTACT HYPNOSIS STUDIO ALEN
 @router.post("/send-email", operation_id='contact')
-async def user_send_email(emailing: Email):
+async def user_send_email(emailing: Email, request: Request):
     """
     Route for sending an email and storing it in the database.
 
@@ -22,28 +25,65 @@ async def user_send_email(emailing: Email):
 
     Raises:
         HTTPException: If email sending fails or if there's an issue with storing the email data.
+        :param request: host
         :param emailing: emails
     """
 
-    # Create the email body using HTML content
-    body = email.html(name=emailing.name, surname=emailing.surname, email=emailing.email, content=emailing.content)
+    # Get the path of the current route from the request
+    route_path = request.url.path
+    route_method = request.method
+    client_host = request.client.host
 
-    # Send the email
-    if not emails.send(email_from=emailing.email, subject=f'Hypnosis Studio Alen | {emailing.name} ti je poslal/a sporočilo ♥', body=body):
-        return HTTPException(status_code=500, detail="Email not sent")
+    try:
 
-    # Store email data in the database
-    email_data = {
-        "_id": emailing.id,
-        "name": emailing.name,
-        "surname": emailing.surname,
-        "email": emailing.email,
-        "content": emailing.content,
-        "datum_vnosa": emailing.datum_vnosa
-    }
-    db.proces.email.insert_one(email_data)
+        # Save route path to logging collection
+        log_entry = Logging(
+            route_action=route_path,
+            domain='BACKEND',
+            client_host=client_host,
+            content=f'Request made to: {route_method} SEND EMAIL - ',
+            datum_vnosa=datetime.datetime.now()
+        )
+        db.log.backend_logs.insert_one(log_entry.dict(by_alias=True))
 
-    return {"message": "Message was sent"}
+        # Create the email body using HTML content
+        body = email.html(name=emailing.name, surname=emailing.surname, email=emailing.email, content=emailing.content)
+
+        # Send the email
+        if not emails.send(email_from=emailing.email,
+                           subject=f'Hypnosis Studio Alen | {emailing.name} ti je poslal/a sporočilo ♥', body=body):
+            return HTTPException(status_code=500, detail="Email not sent")
+
+        # Store email data in the database
+        email_data = {
+            "_id": emailing.id,
+            "name": emailing.name,
+            "surname": emailing.surname,
+            "email": emailing.email,
+            "content": emailing.content,
+            "datum_vnosa": emailing.datum_vnosa
+        }
+        db.proces.email.insert_one(email_data)
+        return {"message": "Message was sent"}
+
+    except Exception as e:
+        # Log the exception
+        error_log_entry = Logging(
+            route_action=route_path,
+            domain='BACKEND',
+            client_host=client_host,
+            content=f'An error occurred: {str(e)}',
+            datum_vnosa=datetime.datetime.now()
+        )
+
+        # Insert the error log entry into the database
+        db.log.backend_logs.insert_one(error_log_entry.dict(by_alias=True))
+
+        # Raise an HTTPException with a 500 Internal Server Error status code
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail='Internal Server Error'
+        )
 
 
 # ADMIN GETTING EMAILS
