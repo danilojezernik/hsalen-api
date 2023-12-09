@@ -25,7 +25,7 @@ router = APIRouter()
 
 # GET ALL BLOG
 @router.get("/", operation_id="get_all_blogs")
-async def get_all(request: Request) -> list[Blog]:
+async def get_all() -> list[Blog]:
     """
     This route handles the retrieval of all blogs from the database.
 
@@ -33,23 +33,6 @@ async def get_all(request: Request) -> list[Blog]:
     - Retrieves all blogs from the database.
     - Returns a list of Blog objects.
     """
-
-    # Get the path of the current route from the request
-    route_path = request.url.path
-    route_method = request.method
-    client_host = request.client.host
-
-    log_entry = Logging(
-        route_action=route_path,
-        domain='BACKEND',
-        client_host=client_host,
-        content=f'Request made to: BLOGS - method {route_method}',
-        datum_vnosa=datetime.datetime.now()
-    )
-
-    print(log_entry)
-
-    db.log.logging_private.insert_one(log_entry.dict(by_alias=True))
 
     # Retrieve all blogs from the database
     cursor = db.proces.blog.find()
