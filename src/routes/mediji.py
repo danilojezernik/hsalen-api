@@ -9,8 +9,12 @@ Routes:
 5. Delete a mediji by ID
 """
 
+import datetime
+
 # Import necessary modules and classes
-from fastapi import APIRouter, HTTPException, Depends
+from fastapi import APIRouter, HTTPException, Depends, Request, status
+
+from src.domain.logs import Logging
 from src.services import db
 from src.domain.mediji import Mediji
 
@@ -22,7 +26,7 @@ router = APIRouter()
 
 # GET ALL MEDIJI
 @router.get('/', operation_id="get_all_mediji")
-def get_mediji() -> list[Mediji]:
+def get_mediji(request: Request) -> list[Mediji]:
     """
     Route to get all Mediji from the database.
 
@@ -30,9 +34,45 @@ def get_mediji() -> list[Mediji]:
         list[Mediji]: List of all Mediji in the database.
     """
 
-    # Retrieve all mediji from the database
-    cursor = db.proces.mediji.find()
-    return [Mediji(**document) for document in cursor]
+    # Get the path of the current route from the request
+    route_path = request.url.path
+    route_method = request.method
+    client_host = request.client.host
+
+    try:
+
+        # Save route path to logging collection
+        log_entry = Logging(
+            route_action=route_path,
+            domain='BACKEND',
+            client_host=client_host,
+            content=f'Request made to: MEDIJI - {route_method}',
+            datum_vnosa=datetime.datetime.now()
+        )
+        db.log.backend_logs.insert_one(log_entry.dict(by_alias=True))
+
+        # Retrieve all mediji from the database
+        cursor = db.proces.mediji.find()
+        return [Mediji(**document) for document in cursor]
+
+    except Exception as e:
+        # Log the exception
+        error_log_entry = Logging(
+            route_action=route_path,
+            domain='BACKEND',
+            client_host=client_host,
+            content=f'An error occurred: {str(e)}',
+            datum_vnosa=datetime.datetime.now()
+        )
+
+        # Insert the error log entry into the database
+        db.log.backend_logs.insert_one(error_log_entry.dict(by_alias=True))
+
+        # Raise an HTTPException with a 500 Internal Server Error status code
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail='Internal Server Error'
+        )
 
 
 # ADMIN

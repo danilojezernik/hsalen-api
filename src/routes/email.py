@@ -41,7 +41,7 @@ async def user_send_email(emailing: Email, request: Request):
             route_action=route_path,
             domain='BACKEND',
             client_host=client_host,
-            content=f'Request made to: {route_method} SEND EMAIL - ',
+            content=f'Request made to: SEND EMAIL - {route_method}',
             datum_vnosa=datetime.datetime.now()
         )
         db.log.backend_logs.insert_one(log_entry.dict(by_alias=True))

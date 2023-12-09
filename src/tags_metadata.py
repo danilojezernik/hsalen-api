@@ -46,5 +46,25 @@ tags_metadata = [
     {
         "name": "Newsletter",
         "description": "uporablja se prefix /newsletter"
+    },
+    {
+        "name": "Index",
+        "description": "uporablja se prefix /index"
+    },
+    {
+        "name": "Hipnoterapija",
+        "description": "uporablja se prefix /hipnoterapija"
+    },
+    {
+        "name": "Samo-hipnoza",
+        "description": "uporablja se prefix /samohipnoza"
+    },
+    {
+        "name": "Jasnovidnost",
+        "description": "uporablja se prefix /jasnovidnost"
+    },
+    {
+        "name": "Medijstvo",
+        "description": "uporablja se prefix /medijstvo"
     }
 ]

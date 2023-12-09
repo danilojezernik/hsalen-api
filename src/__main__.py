@@ -15,7 +15,8 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from src import env
-from src.routes import mediji, admin, login, blog, email, events, subscriber, newsletter, review
+from src.routes import mediji, admin, login, blog, email, events, subscriber, newsletter, review, index, hipnotherapy, \
+    selfhypnosis, clairvoyance, regression, mediumship
 # from src.services import db
 from src.tags_metadata import tags_metadata
 
@@ -44,6 +45,13 @@ app.include_router(review.router, prefix="/review", tags=['Review'])
 app.include_router(subscriber.router, prefix="/subscribers", tags=['Subscriber'])
 app.include_router(newsletter.router, prefix="/newsletter", tags=['Newsletter'])
 
+# Routes that insert logs only
+app.include_router(index.router, prefix="/index", tags=['Index'])
+app.include_router(hipnotherapy.router, prefix="/hipnoterapija", tags=['Hipnoterapija'])
+app.include_router(selfhypnosis.router, prefix="/samohipnoza", tags=['Samo-hipnoza'])
+app.include_router(clairvoyance.router, prefix="/jasnovidnost", tags=['Jasnovidnost'])
+app.include_router(regression.router, prefix="/regresija", tags=['Regresija'])
+app.include_router(mediumship.router, prefix="/medijstvo", tags=['Medijstvo'])
 
 if __name__ == '__main__':
     # Drop the database and seed it
