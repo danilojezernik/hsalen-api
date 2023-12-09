@@ -9,7 +9,7 @@ from src.database.user import user
 from src.database.event import event
 from src.database.review import review
 from src.database.subscriber import subscriber
-from src.database.logs import logging_private
+from src.database.logs import backend_logs
 
 client = MongoClient(env.DB_CONNECTION)
 proces = client[env.DB_PROCES]

@@ -25,7 +25,7 @@ router = APIRouter()
 
 # GET ALL BLOG
 @router.get("/", operation_id="get_all_blogs")
-async def get_all() -> list[Blog]:
+async def get_all(request: Request) -> list[Blog]:
     """
     This route handles the retrieval of all blogs from the database.
 
@@ -33,10 +33,44 @@ async def get_all() -> list[Blog]:
     - Retrieves all blogs from the database.
     - Returns a list of Blog objects.
     """
+    # Get the path of the current route from the request
+    route_path = request.url.path
+    route_method = request.method
+    client_host = request.client.host
 
-    # Retrieve all blogs from the database
-    cursor = db.proces.blog.find()
-    return [Blog(**document) for document in cursor]
+    try:
+        # Save route path to logging collection
+        log_entry = Logging(
+            route_action=route_path,
+            domain='BACKEND',
+            client_host=client_host,
+            content=f'Request made to: {route_method} ALL BLOG - ',
+            datum_vnosa=datetime.datetime.now()
+        )
+        db.log.backend_logs.insert_one(log_entry.dict(by_alias=True))
+
+        # Retrieve all blogs from the database
+        cursor = db.proces.blog.find()
+        return [Blog(**document) for document in cursor]
+
+    except Exception as e:
+        # Log the exception
+        error_log_entry = Logging(
+            route_action=route_path,
+            domain='BACKEND',
+            client_host=client_host,
+            content=f'An error occurred: {str(e)}',
+            datum_vnosa=datetime.datetime.now()
+        )
+
+        # Insert the error log entry into the database
+        db.log.backend_logs.insert_one(error_log_entry.dict(by_alias=True))
+
+        # Raise an HTTPException with a 500 Internal Server Error status code
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail='Internal Server Error'
+        )
 
 
 # GET ALL BLOG LIMIT 4

@@ -2,7 +2,7 @@ import datetime
 
 from src.domain.logs import Logging
 
-logging_private = [
+backend_logs = [
     Logging(
         route_action='route_action',
         domain='PRIVATE',
