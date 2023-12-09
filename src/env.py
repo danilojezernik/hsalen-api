@@ -4,8 +4,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 PORT = int(os.getenv('PORT'))
+
 DB_CONNECTION = str(os.getenv('DB_CONNECTION'))
 DB_PROCES = str(os.getenv('DB_PROCES'))
+
+DB_CONNECTION_LOGGING = str(os.getenv('DB_CONNECTION_LOGGING'))
+
 SECRET_KEY = str(os.getenv('SECRET_KEY'))
 UPORABNIK = str(os.getenv('UPORABNIK'))
 GESLO = str(os.getenv('GESLO'))

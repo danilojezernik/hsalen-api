@@ -66,6 +66,8 @@ async def get_mediji_id_admin(_id: str, current_user: str = Depends(get_current_
 
     Raises:
         HTTPException: If the Mediji with the specified ID is not found.
+        :param _id:
+        :param current_user:
     """
 
     # Retrieve a mediji by its ID from the database
@@ -90,6 +92,8 @@ async def post_one_admin(mediji: Mediji, current_user: str = Depends(get_current
 
     Notes:
         If the insertion fails, None is returned.
+        :param mediji:
+        :param current_user:
     """
 
     # Convert Mediji object to a dictionary
@@ -124,6 +128,9 @@ async def edit_mediji_admin(_id: str, mediji: Mediji, current_user: str = Depend
 
     Raises:
         HTTPException: If the Mediji is not found for editing.
+        :param _id:
+        :param mediji:
+        :param current_user:
     """
 
     # Convert the Mediji object to a dictionary and remove the ID field
@@ -161,6 +168,8 @@ async def delete_mediji_admin(_id: str, current_user: str = Depends(get_current_
 
     Raises:
         HTTPException: If the Mediji is not found for deletion.
+        :param _id:
+        :param current_user:
     """
 
     # Delete a Mediji by its ID from the database

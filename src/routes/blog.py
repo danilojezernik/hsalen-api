@@ -8,9 +8,13 @@ Routes:
 4. Edit an existing blog by ID
 5. Delete a blog by ID
 """
-# Import necessary modules and classes
-from fastapi import APIRouter, HTTPException, Depends
 
+# Import necessary modules and classes
+import datetime
+
+from fastapi import APIRouter, HTTPException, Depends, Request, status
+
+from src.domain.logs import Logging
 from src.services import db
 from src.domain.blog import Blog
 from src.services.security import get_current_user
@@ -21,7 +25,7 @@ router = APIRouter()
 
 # GET ALL BLOG
 @router.get("/", operation_id="get_all_blogs")
-async def get_all() -> list[Blog]:
+async def get_all(request: Request) -> list[Blog]:
     """
     This route handles the retrieval of all blogs from the database.
 
@@ -29,6 +33,23 @@ async def get_all() -> list[Blog]:
     - Retrieves all blogs from the database.
     - Returns a list of Blog objects.
     """
+
+    # Get the path of the current route from the request
+    route_path = request.url.path
+    route_method = request.method
+    client_host = request.client.host
+
+    log_entry = Logging(
+        route_action=route_path,
+        domain='BACKEND',
+        client_host=client_host,
+        content=f'Request made to: BLOGS - method {route_method}',
+        datum_vnosa=datetime.datetime.now()
+    )
+
+    print(log_entry)
+
+    db.log.logging_private.insert_one(log_entry.dict(by_alias=True))
 
     # Retrieve all blogs from the database
     cursor = db.proces.blog.find()
@@ -85,7 +106,6 @@ async def get_all_admin(current_user: str = Depends(get_current_user)) -> list[B
     - Retrieves all blogs from the database.
     - Returns a list of Blog objects.
     """
-
     # Retrieve all blogs from the database for ADMIN
     cursor = db.proces.blog.find()
     return [Blog(**document) for document in cursor]
