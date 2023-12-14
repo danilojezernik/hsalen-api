@@ -10,6 +10,9 @@ import datetime
 
 from fastapi import APIRouter, HTTPException, Request, status
 
+import urllib.request
+import json
+
 from src.domain.logs import Logging
 from src.services import db
 
@@ -32,12 +35,18 @@ async def get_all(request: Request):
     route_method = request.method
     client_host = request.client.host
 
+    with urllib.request.urlopen("https://geolocation-db.com/json") as url:
+        data = json.loads(url.read().decode())
+
+    city = data.get("city", "City Not Found")
+
     try:
         # Save route path to logging collection
         log_entry = Logging(
             route_action=route_path,
             domain='BACKEND',
             client_host=client_host,
+            city=city,
             content=f'Request made to: MEDIJSTVO - {route_method} ',
             datum_vnosa=datetime.datetime.now()
         )
@@ -51,6 +60,7 @@ async def get_all(request: Request):
             route_action=route_path,
             domain='BACKEND',
             client_host=client_host,
+            city=city,
             content=f'An error occurred: {str(e)}',
             datum_vnosa=datetime.datetime.now()
         )

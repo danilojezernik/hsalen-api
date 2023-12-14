@@ -8,6 +8,7 @@ backend_logs = [
         domain='PRIVATE',
         content='content',
         client_host='localhost',
+        city='Mozirje',
         datum_vnosa=datetime.datetime.now()
     ).dict(by_alias=True)
 ]
