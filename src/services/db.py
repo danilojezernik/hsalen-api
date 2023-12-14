@@ -26,6 +26,8 @@ def drop():
     # proces.subscriber.drop()
     # proces.newsletter.drop()
     # proces.review.drop()
+
+    # log.backend_logs.drop()
     pass
 
 
@@ -38,4 +40,6 @@ def seed():
     # proces.subscriber.insert_many(subscriber)
     # proces.newsletter.insert_many(newsletter)
     # proces.review.insert_many(review)
+
+    # log.backend_logs.insert_many(backend_logs)
     pass
