@@ -14,9 +14,6 @@ import datetime
 # Import necessary modules and classes
 from fastapi import APIRouter, HTTPException, Depends, Request, status
 
-import urllib.request
-import json
-
 from src.domain.logs import Logging
 from src.services import db
 from src.domain.mediji import Mediji
@@ -42,11 +39,6 @@ def get_mediji(request: Request) -> list[Mediji]:
     route_method = request.method
     client_host = request.client.host
 
-    with urllib.request.urlopen("https://geolocation-db.com/json") as url:
-        data = json.loads(url.read().decode())
-
-    city = data.get("city", "City Not Found")
-
     try:
 
         # Save route path to logging collection
@@ -54,7 +46,6 @@ def get_mediji(request: Request) -> list[Mediji]:
             route_action=route_path,
             domain='BACKEND',
             client_host=client_host,
-            city=city,
             content=f'Request made to: MEDIJI - {route_method}',
             datum_vnosa=datetime.datetime.now()
         )
@@ -70,7 +61,6 @@ def get_mediji(request: Request) -> list[Mediji]:
             route_action=route_path,
             domain='BACKEND',
             client_host=client_host,
-            city=city,
             content=f'An error occurred: {str(e)}',
             datum_vnosa=datetime.datetime.now()
         )
