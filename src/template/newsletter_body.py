@@ -418,7 +418,7 @@ def html_newsletter(title: str, content: str) -> str:
                                         <a href="https://hypnosisstudioalen.si/blog" class="anchor-decoration" style="color: black">Blog</a>
                                     </td>
                                     <td class="content-block">
-                                        <a href="https://hypnosisstudioalen.si/omeni" class="anchor-decoration" style="color: black">O meni</a>
+                                        <a href="https://hypnosisstudioalen.si/o-meni" class="anchor-decoration" style="color: black">O meni</a>
                                     </td>
                                     <td class="content-block">
                                         <a href="https://hypnosisstudioalen.si/dogodki" class="anchor-decoration" style="color: black">Dogodki</a>
