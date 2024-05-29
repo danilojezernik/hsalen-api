@@ -219,6 +219,7 @@ async def edit_blog_admin(_id: str, blog: Blog, current_user: str = Depends(get_
         if updated_document:
             updated_document['_id'] = str(updated_document['_id'])
             return Blog(**updated_document)
+
     # Return None if the blog was not updated
     return None
 
