@@ -108,4 +108,4 @@ async def send_newsletter_to_all(newsletter: Newsletter, current_user: str = Dep
         return Newsletter(**newsletter_dict)
     else:
         # If the insertion was not acknowledged, return None
-        return None
+        raise HTTPException(status_code=500, detail="Failed to insert newsletter into database")
